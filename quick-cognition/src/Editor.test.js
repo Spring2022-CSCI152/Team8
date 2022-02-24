@@ -13,3 +13,9 @@ test('renders card content field', () => {
   expect(cardContentField).toBeInTheDocument();
 });
 
+test('renders flip button', () => {
+  render(<Editor />);
+  const cardContentField = screen.getByRole(/button/i, {name: "Flip"});
+  expect(cardContentField).toBeInTheDocument();
+});
+

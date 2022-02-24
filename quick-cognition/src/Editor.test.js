@@ -7,3 +7,9 @@ test('renders title field', () => {
   expect(titleElement).toBeInTheDocument();
 });
 
+test('renders card content field', () => {
+  render(<Editor />);
+  const cardContentField = screen.getByLabelText(/content/i);
+  expect(cardContentField).toBeInTheDocument();
+});
+

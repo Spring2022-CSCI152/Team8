@@ -1,9 +1,9 @@
 function Editor() {
   return (
     <div className="Editor">
-      <label for="title">Title</label>
+      <label htmlFor="title">Title</label>
       <input id="title" type="text" />
-      <label for="card-content">Content</label>
+      <label htmlFor="card-content">Content</label>
       <input id="card-content" type="text" />
       <button>Flip</button>
     </div>

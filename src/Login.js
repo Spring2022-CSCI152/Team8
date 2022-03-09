@@ -123,8 +123,8 @@ const Login = props => {
 					<input type="password" style={{fontSize:18}} placeholder="password" onChange={handlePassword} value={password}/><br/>
 					<input type="password" style={{fontSize:18}} placeholder="confirm password" onChange={handleCPassword} value={confirmPass}/>
 				</form>
-				<button className="btn" type="submit" onClick={handleSignupbtn}>Signup</button>
-				<button onClick={handleClick} >Already have an account?</button>
+				<button role="signUpBtn" className="btn" type="submit" onClick={handleSignupbtn}>Signup</button>
+				<button role="loginLink" onClick={handleClick} >Already have an account?</button>
 			</div>
 			 <div style={{ //style and structure of the login side
 				 backgroundColor: "#EEEEEE", 
@@ -145,8 +145,8 @@ const Login = props => {
 					<input type="email" style={{fontSize:18}} placeholder="Email" onChange={handleEmail} value={email}/><br/>
 					<input type="password" style={{fontSize:18}} placeholder="password" onChange={handlePassword} value={password}/><br/>
 				</form>
-				<button className="btn" type="submit" onClick={handleLoginbtn}>Login</button>
-				<button onClick={handleClick}>Don't have an account?</button>
+				<button role="loginBtn" className="btn" type="submit" onClick={handleLoginbtn}>Login</button>
+				<button role="signUpLink" onClick={handleClick}>Don't have an account?</button>
 			</div>
 		  </ReactCardFlip>	  
 	);

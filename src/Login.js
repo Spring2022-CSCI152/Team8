@@ -119,9 +119,9 @@ const Login = props => {
 				{errorMessage()}
 				</div>
 				<form>
-					<input type="email" style={{fontSize:18}} placeholder="Email" onChange={handleEmail} value={email}/><br/>
-					<input type="password" style={{fontSize:18}} placeholder="password" onChange={handlePassword} value={password}/><br/>
-					<input type="password" style={{fontSize:18}} placeholder="confirm password" onChange={handleCPassword} value={confirmPass}/>
+					<input type="email" style={{fontSize:18}} data-testid="S-email" placeholder="Email" onChange={handleEmail} value={email}/><br/>
+					<input type="password" style={{fontSize:18}} data-testid="S-password" placeholder="password" onChange={handlePassword} value={password}/><br/>
+					<input type="password" style={{fontSize:18}} data-testid="S-Cpassword" placeholder="confirm password" onChange={handleCPassword} value={confirmPass}/>
 				</form>
 				<button role="signUpBtn" className="btn" type="submit" onClick={handleSignupbtn}>Signup</button>
 				<button role="loginLink" onClick={handleClick} >Already have an account?</button>
@@ -142,8 +142,8 @@ const Login = props => {
 				{errorMessage()}
 				</div>
 				<form>
-					<input type="email" style={{fontSize:18}} placeholder="Email" onChange={handleEmail} value={email}/><br/>
-					<input type="password" style={{fontSize:18}} placeholder="password" onChange={handlePassword} value={password}/><br/>
+					<input type="email" style={{fontSize:18}} data-testid="L-email" placeholder="Email" onChange={handleEmail} value={email}/><br/>
+					<input type="password" style={{fontSize:18}} data-testid="L-password" placeholder="password" onChange={handlePassword} value={password}/><br/>
 				</form>
 				<button role="loginBtn" className="btn" type="submit" onClick={handleLoginbtn}>Login</button>
 				<button role="signUpLink" onClick={handleClick}>Don't have an account?</button>

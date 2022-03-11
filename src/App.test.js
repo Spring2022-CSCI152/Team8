@@ -7,8 +7,8 @@ beforeAll(setUpDB)
 afterAll(async () => await getClient().close())
 test('renders new card button', () => {
   render(<App />)
-  const cardContentField = screen.getByRole(/button/i, { name: "New Card" })
-  expect(cardContentField).toBeInTheDocument()
+  const newCardButton = screen.getByRole(/button/i, { name: "New Card" })
+  expect(newCardButton).toBeInTheDocument()
 })
 
 async function getNumCards() {
@@ -16,8 +16,8 @@ async function getNumCards() {
 }
 test('new card button creates new card', async () => {
   render(<App />)
-  const cardContentField = screen.getByRole(/button/i, { name: "New Card" })
+  const newCardButton = screen.getByRole(/button/i, { name: "New Card" })
   let prevNumCards = await getNumCards()
-  userEvent.click(cardContentField)
+  userEvent.click(newCardButton)
   expect(await getNumCards()).toEqual(prevNumCards + 1)
 })

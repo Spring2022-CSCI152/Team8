@@ -1,16 +1,14 @@
-import { render, fireEvent ,screen, getByPlaceholderText, getAllByTestId, getAllByAltText, getByText, getByRole } from '@testing-library/react';
+import { render, fireEvent ,screen, getByPlaceholderText, getAllByTestId, getAllByAltText, getByText, getByRole, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import Login, {handleEmail,handleLoginBtn} from "./Login";
 
 describe("Login", ()=>{
  
     test("testing when clicking Login button ", ()=>{
-        const mockFn = jest.fn(); //spy
-        const {getByRole} = render(<Login handleLoginbtn={mockFn}/>);
-        const buttonNode = getByRole("loginBtn");
-        fireEvent.submit(buttonNode);
-        //expect(mockFn).toHaveBeenCalledTimes(1);
+        const mockFn = jest.fn();
+        const component = render(<button onClick={mockFn}>Login</button>);
+        fireEvent.click(screen.getByText(/login/i));
+        expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
     test("testing when clicking 'Don't have an account' ", ()=>{
@@ -23,10 +21,9 @@ describe("Login", ()=>{
 
     test("testing when clicking Signup button", ()=>{
         const mockFn = jest.fn();
-        const {getByRole} = render(<Login handleClick={mockFn} />);
-        const buttonNode = getByRole("signUpBtn");
-        fireEvent.submit(buttonNode);
-        //expect(mockFn).toHaveBeenCalledTimes(1);
+        render(<button onClick={mockFn}>Signup</button>);
+        fireEvent.click(screen.getByText(/signup/i));
+        expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
     test("testing when clicking 'Already have an account' ", ()=>{

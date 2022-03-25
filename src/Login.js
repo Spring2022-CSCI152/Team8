@@ -59,12 +59,12 @@ const Login = props => {
 				email: email,
 				password: password
 			}
-			/*axios.post(/*Server link here, registered).then((response) => {
+			axios.post("http://localhost:80/registration", registered).then((response) => {
 				console.log(response.data)
 				window.location = '/login';
 			}).catch((res)=>{
 				this.setState({...this.state, error: res.response.data.password}, console.log(this.state))
-			})*/
+			})
 		}
 	};
 	

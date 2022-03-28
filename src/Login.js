@@ -1,5 +1,5 @@
 import "./Login.css"
-import React, {useState} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import ReactCardFlip from 'react-card-flip';
 import axios from "axios";
 
@@ -17,10 +17,18 @@ const Login = props => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPass, setCPassword] = useState('');
+	const [user, setUser] = useState();
 	
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState(false);
 	
+	useEffect(() => {
+		const loggedInUser = localStorage.getItem("user");
+		if (loggedInUser){
+			const foundUser = JSON.parse(loggedInUser);
+			setUser(foundUser);
+		}
+	}, []);
 	
 	// Handling the email change
 	const handleEmail = (e) => {
@@ -81,7 +89,29 @@ const Login = props => {
 		else {
 			setSubmitted(true);
 			setError(false);
-			window.location = '/';
+			
+			const user = {email, password};
+			
+			/*axios.get('link here'?email=user.email+"&password="+user.password)
+						.then((response) => {
+							console.log(response.data._doc)
+							setUser(response.data._doc);
+							if (response.data.message === "Passwords match") {
+								localStorage.setItem("user", JSON.stringify(response.data._doc))
+								localStorage.setItem("email", JSON.stringify(response.data._doc.email))
+								setAuthState(true)
+							};
+						})
+						.catch((res) => {
+							if (user.password === "" && user.email === ""){document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password."}
+							else if (user.email === ""){document.getElementById("error").innerHTML = "Must provide email."}
+							else if (user.password === ""){document.getElementById("error").innerHTML = "Must provide password."}
+							else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
+							console.log(res)
+						})*/
+			if (user){
+				window.location = '/';
+			}
 		}
 	};
 

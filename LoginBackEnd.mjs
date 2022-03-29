@@ -1,5 +1,7 @@
 import cors from "cors"
 import express from "express"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url);
 
 const { MongoClient } = require('mongodb');
 var db;
@@ -29,10 +31,10 @@ function getClient() {
 }
 
 app.post('/login', (req, res) => {
-    const result;
+    var result;
     const { email, password } = req.body;
     setUpDB();
-
+    
     if (users.findOne({ email: email, password: password }) != null) { // if user can be found in database
         result = { message: "login successful", user:users.findOne({ email: email, password: password })}; // send success message and user
     }
@@ -45,7 +47,8 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/registration', (req, res) => {
-    const result;
+    console.log("AEA");
+    var result;
     const { email, password } = req.body;
     setUpDB();
 
@@ -58,4 +61,8 @@ app.post('/registration', (req, res) => {
     }
     client.close();
     res.send(result);
+})
+
+app.listen(5565, () => {
+    console.log("listening on port 5565")
 })

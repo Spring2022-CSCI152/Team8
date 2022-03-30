@@ -1,40 +1,20 @@
 import cors from "cors"
 import express from "express"
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url);
+import pkg from '../Team8/database.mjs';
+const { setUpDB, getCards, getUsers, getClient } = pkg;
 
-const { MongoClient } = require('mongodb');
-var db;
-var users;
-var client;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
 
-async function setUpDB() {
-    // Mongo will not connect unless your IP is whitelisted
-    client = new MongoClient(`mongodb+srv://Na:${encodeURIComponent(process.env.MONGODB_PASSWORD)}@cluster0.ptnk2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`)
-    await client.connect()
-    db = client.db("myFirstDatabase")
-    users = db.collection("Users")
-}
-
-function getDB() {
-    return db;
-}
-function getCards() {
-    return cards;
-}
-function getClient() {
-    return client;
-}
-
 app.post('/login', (req, res) => {
+    console.log("login request recieved");
     var result;
     const { email, password } = req.body;
     setUpDB();
-    
+    const users = getUsers();
+
     if (users.findOne({ email: email, password: password }) != null) { // if user can be found in database
         result = { message: "login successful", user:users.findOne({ email: email, password: password })}; // send success message and user
     }
@@ -47,10 +27,11 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/registration', (req, res) => {
-    console.log("AEA");
+    console.log("registration request recieved");
     var result;
     const { email, password } = req.body;
     setUpDB();
+    const users = getUsers();
 
     if (users.findOne({ email: email }) != null) { //if there already exists a user with the given email
         result = {message: "user already exists"};

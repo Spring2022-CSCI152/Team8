@@ -1,11 +1,11 @@
-import { getCards } from '../database'
+import Editor from './Editor'
+
 function App() {
-    function newCard() {
-        getCards().insertOne({ title: "foo" });
-    }
     return (
         <div className="app">
-            <button onClick={newCard}>New Card</button>
+            <a href={"/card"}>
+                <button>New Card</button>
+            </a>
         </div>
     );
 }

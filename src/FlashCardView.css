@@ -1,0 +1,21 @@
+.cardInput {
+	border-color: #000;
+    word-wrap: break-word;
+    word-break: break-word;
+    height: 400px;
+    width: 400px;
+    text-align: center;
+}
+
+.cardNavBtn {
+    font-size:16px;
+	text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+

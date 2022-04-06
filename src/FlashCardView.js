@@ -1,12 +1,33 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import ReactCardFlip from 'react-card-flip';
 import axios from "axios";
 import "./FlashCardView.css"
 
+const FlashCardList = [
+    {
+        categoryText: "cat1",
+        frontText: "front1",
+        backText: "back1"
+    },
+
+    {
+        categoryText: "ca2",
+        frontText: "front2",
+        backText: "back2"
+    },
+
+    {
+        categoryText: "cat3",
+        frontText: "front3",
+        backText: "back3"
+    }
+]
+
 //This is a functional component. It holds all the functions
 //within it.
 const FlashCardView = props => {
-    
+    var index = 0;
+
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
     const handleClick = () => {
@@ -14,35 +35,49 @@ const FlashCardView = props => {
     };
     
     //
-    const [categoryText, setCategory] = useState('');
-    const [frontText, setFront] = useState('');
-    const [backText, setBack] = useState('');
+    const [categoryText, setCategory] = useState(FlashCardList[index].categoryText);
+    const [frontText, setFront] = useState(FlashCardList[index].frontText);
+    const [backText, setBack] = useState(FlashCardList[index].backText);
     
-    const [submitted, setSubmitted] = useState(false);
-    
-    // Handling the category text change
+     // Handling the category text change
     const handleCategory = (e) => {
-    setCategory(e.target.value);
-        setSubmitted(false);
-    };
-
+         setCategory(e.target.value);
+        };
+        
     // Handling the front text change
     const handleFront = (e) => {
-    setFront(e.target.value);
-        setSubmitted(false);
-    };
-
+        setFront(e.target.value);
+        };
+        
     // Handling the back text change
     const handleBack = (e) => {
-    setBack(e.target.value);
-        setSubmitted(false);
-    };
+        setBack(e.target.value);
+         };
 
     const handlePrevBtn = () => {
+        if (index === 0)
+        {
+            index = (FlashCardList.length-1);
+        }
+        else
+        {
+            index -= 1;
+        }
+        console.log(index);
+       
         
     };
 
     const handleNextBtn = () => {
+        if (index === FlashCardList.length-1)
+        {
+            index = 0;
+        }
+        else
+        {
+            index += 1;
+        }
+        
         
     };
     
@@ -65,8 +100,8 @@ const FlashCardView = props => {
                     margin: "auto",
                 }}
                 data-testid="c-Text"
-                readOnly="true"
                 placeholder="Category Text"
+                readOnly = "true"
                 onChange={handleCategory}
                 value={categoryText} /><br />
         </div><ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto" }}>
@@ -90,7 +125,7 @@ const FlashCardView = props => {
                         style={{ fontSize: 18, alignContent: "center" }} 
                         data-testid="f-Text" 
                         placeholder="Front Text"
-                        readOnly="true" 
+                        readOnly = "true"
                         onChange={handleFront} 
                         value={frontText} 
                         /><br />
@@ -119,8 +154,9 @@ const FlashCardView = props => {
                         type="text" 
                         className="cardInput" 
                         style={{ fontSize: 18, alignContent: "center" }} 
-                        data-testid="b-Text" readOnly="true" 
+                        data-testid="b-Text"
                         placeholder="Back Text" 
+                        readOnly = "true"
                         onChange={handleBack} 
                         value={backText} />
                         <br />
@@ -140,6 +176,7 @@ const FlashCardView = props => {
 
 
 export default FlashCardView;
+
 
 
 

@@ -60,6 +60,7 @@ const Login = props => {
 		//Otherwise, the card is flipped and the sign up info 
 		//is sent to server
 		else {
+			console.log("login")
 			setSubmitted(true);
 			setError(false);
 			setIsFlipped(!isFlipped);
@@ -79,7 +80,7 @@ const Login = props => {
 	//handles the events that happen when the Login button is clicked
 	const handleLoginbtn = (e) => {
 		e.preventDefault();
-
+		
 		//if the fields are left blank it sets the error to true.
 		if (email === '' || password === '') {
 			setError(true);
@@ -91,7 +92,6 @@ const Login = props => {
 			setError(false);
 
 			const user = { email, password };
-			console.log("aaa")
 			axios.post("http://localhost:5565/login", user).then((response) => {
 							console.log(response.data.message)
 							//setUser(response.data);
@@ -101,13 +101,13 @@ const Login = props => {
 								//setAuthState(true)
 							};
 						})
-						/*.catch((res) => {
+						.catch((res) => {
 							if (user.password === "" && user.email === ""){document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password."}
 							else if (user.email === ""){document.getElementById("error").innerHTML = "Must provide email."}
 							else if (user.password === ""){document.getElementById("error").innerHTML = "Must provide password."}
-							else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
+							//else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
 							console.log(res)
-						})*/
+						})
 			if (user) {
 				window.location = '/';
 			}

@@ -13,7 +13,7 @@ import {
 ReactDOM.render(
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<App />} />
+          <Route exact path="/" element={<App />} />
           <Route path="card" element={<Editor />}/>
       </Routes>
     </BrowserRouter>,

@@ -38,8 +38,8 @@ test('editing creates new card', async () => {
         oldCard = null
     }
     expect(oldCard).toBeNull()
-    const cardContentField = screen.getByLabelText(/content/i);
     render(<Editor id="0" />)
+    const cardContentField = screen.getByLabelText('Content');
     cardContentField.value = content
     fireEvent.change(cardContentField)
     let card

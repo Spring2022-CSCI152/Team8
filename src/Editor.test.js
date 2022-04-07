@@ -5,6 +5,7 @@ import {
 } from '@testing-library/react'
 import Editor from './Editor';
 import axios from 'axios'
+import {type} from '@testing-library/user-event'
 
 test('renders card content field', () => {
     render(<Editor />);
@@ -29,25 +30,25 @@ test('editing creates new card', async () => {
     const content = "special QuickCognition development test card"
     const url = `http://localhost:${process.env.PORT}`
     try {
-        await axios.delete(`${url}/card/delete?_id=0`)
+        await axios.delete(`${url}/card/delete?id=0`)
     } catch (e) {}
     let oldCard
     try {
-        oldCard = await axios.get(`${url}/card?_id=0`)
+        oldCard = await axios.get(`${url}/card?id=0`)
     } catch (e) {
         oldCard = null
     }
     expect(oldCard).toBeNull()
     render(<Editor id="0" />)
     const cardContentField = screen.getByLabelText('Content');
-    cardContentField.value = content
-    fireEvent.change(cardContentField)
-    let card
+    fireEvent.change(cardContentField, {target: {value: content}})
+    sleep(1000)
+    let result
     try {
-        card = await axios.get(`${url}/card?_id=0`)
+        result = await axios.get(`${url}/card?id=0`)
     } catch (e) {
         Error.captureStackTrace(e)
         throw e
     }
-    expect(card.content).toEqual(content)
+    expect(result.data.content).toEqual(content)
 });

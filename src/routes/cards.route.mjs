@@ -20,21 +20,23 @@ router.get('/card', async (req, res) => {
     }
 })
 router.post('/card', async (req, res) => {
+    let result
     try {
         if (req.body == null) {
             res.status(400).send("Request body cannot be null.")
             return
         }
-        const result = await getCards().updateOne(req.query, {
+        result = await getCards().updateOne(req.query, {
             $set: req.body
         }, {
             upsert: true
         })
     } catch (e) {
+        console.log(e)
         Error.captureStackTrace(e);
         throw e
     }
-    if (result.insertedCount > 0) {
+    if (result.matchedCount > 0) {
         res.status(200).send(result)
     } else {
         res.status(500).send("Failed to insert.")

@@ -1,0 +1,7 @@
+finish a feature
+finish a CRUD feature
+implement card creation
+get test to pass
+get onChange to fire in the test
+get userEvent.type to work
+search TypeError: (0 , _userEvent.type) is not a function

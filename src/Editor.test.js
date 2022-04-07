@@ -47,7 +47,7 @@ test('editing creates new card', async () => {
     try {
         result = await axios.get(`${url}/card?id=0`)
     } catch (e) {
-        Error.captureStackTrace(e)
+        console.log(e)
         throw e
     }
     expect(result.data.content).toEqual(content)

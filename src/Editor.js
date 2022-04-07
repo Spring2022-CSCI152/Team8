@@ -13,11 +13,13 @@ function useAsync(asyncFn, onSuccess) {
     return () => { isActive = false };
   }, [asyncFn, onSuccess]);
 }
+function generateID() {
+    return Math.random().toString(16).slice(2)
+}
 function Editor(props) {
     let initialState = {
         content: ''
     }
-    if (props.id) {initialState.id = props.id}
     const [card, setCard] = useState(initialState)
     async function getCard() {
         let result
@@ -31,10 +33,22 @@ function Editor(props) {
     const inputElem = <input id="card-content" type="text" onChange={handleOnChange} />
     async function save() {
         try {
-            console.log(card)
-            await axios.post(`${process.env.REACT_APP_BASE_URL}/card`, card)
+            if (props.id) {
+                let alreadyExists = true
+                while (alreadyExists) {
+                    card.id = generateID()
+                    try {
+                        await axios.get(`${process.env.REACT_APP_BASE_URL}/card?id=${card.id}`)
+                    } catch (e) {
+                        alreadyExists = false
+                    }
+                }
+                await axios.post(`${process.env.REACT_APP_BASE_URL}/card/new`, card)
+            } else {
+                await axios.post(`${process.env.REACT_APP_BASE_URL}/card/update`, card)
+            }
         } catch (e) {
-            Error.captureStackTrace(e);
+            console.log(e)
             throw e
         }
     }

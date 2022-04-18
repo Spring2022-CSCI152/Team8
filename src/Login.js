@@ -109,7 +109,8 @@ const Login = props => {
 							else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
 							console.log(res)
 						})*/
-			if (user){
+			const loggedInUser = localStorage.getItem("user");
+			if (loggedInUser != null){
 				window.location = '/';
 			}
 		}

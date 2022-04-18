@@ -1,0 +1,120 @@
+.flashCard{
+	height: 200px;
+	width: 300px;
+	background-color: #fff;
+	border: none;
+	font-size: 70px;
+	
+}
+.Cardz {
+	height: 200px;
+	width: 300px;
+	font-size: 20px;
+	background-color: #fff;
+	border: none;
+}
+
+.flashCard:hover {
+	background-color: #EEEEEE;
+}
+
+.Cardz:hover {
+	background-color: #EEEEEE;
+}
+
+/* Popup style */
+.popup-box {
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+ 
+.box {
+  position: relative;
+  width: 30%;
+  margin: 0 auto;
+  height: auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #999;
+  overflow: auto;
+}
+
+.close-icon {
+  content: 'x';
+  cursor: pointer;
+  position: fixed;
+  right: calc(35% - 30px);
+  top: calc(100vh - 85vh - 33px);
+  background: #ededed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  line-height: 20px;
+  text-align: center;
+  border: 1px solid #999;
+  font-size: 20px;
+}
+
+.form {
+	margin-left: 60px;
+}
+
+.textBox {
+	margin-left: 20px;
+	width: 70%;
+}
+
+.confirm {
+	padding: 3% 32%;
+	background-color: #000;
+	color: purple;
+	font-size: 20px;
+	border: none;
+}
+
+.links {
+	padding: 10px 30px;
+	background-color: #000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+a {
+	text-decoration: none;
+	font-size: 20px;
+}
+.options {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	background-color: #fff;
+}
+.option{
+	width: 100%;
+	background-color: #fff;
+	font-size: 20px;
+	padding: 10px 0px;	
+}
+
+.option:hover{
+	color: #AA14F0;
+}
+
+a:hover{
+	background-color: #fff;
+}
+
+a {
+	border-style: solid;
+	border-color: black;
+	border-radius: 5px;
+	padding: 2px;
+}

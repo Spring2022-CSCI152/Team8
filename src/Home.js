@@ -22,8 +22,8 @@ const Home = props => {
 		setIsOpen1(!isOpen1);
 		setCatText(categoryText);
 	}
-	function handleDelete(catText){
-		const newList = list.filter((categoryText) => categoryText !== catText);
+	function handleDelete(categoryText){
+		const newList = DeckList.filter(e => e.categoryText !== categoryText);
 		setList(newList);
 	}
 	return <div>
@@ -35,7 +35,7 @@ const Home = props => {
 		  alignItems: "center",
 		  alignContent: "stretch",
 	  }}>
-		  {DeckList.map(({categoryText}) => (
+		  {list.map(({categoryText}) => (
 			<button key={categoryText} className="Cardz" onClick={() => togglePopup1(categoryText)}><b>{categoryText}</b></button>
 		  ))}
 		  <button className="flashCard" onClick={togglePopup}> + </button>

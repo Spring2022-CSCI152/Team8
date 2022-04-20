@@ -3,6 +3,8 @@ import {
 } from '../database.mjs'
 import express from 'express'
 const router = express.Router()
+
+// inserts or updates a card
 async function upsert(req, res, isNew) {
     let result
     try {

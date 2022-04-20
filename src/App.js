@@ -1,11 +1,12 @@
 import Editor from './Editor'
+import {Link} from 'react-router-dom'
 
 function App() {
     return (
         <div className="app">
-            <a href={"/card"}>
+            <Link to="/card">
                 <button>New Card</button>
-            </a>
+            </Link>
         </div>
     );
 }

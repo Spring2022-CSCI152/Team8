@@ -14,7 +14,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
           <Route exact path="/" element={<App />} />
-          <Route path="card" element={<Editor />}/>
+          <Route path="/card" element={<Editor />} />
       </Routes>
     </BrowserRouter>,
     document.getElementById('root')

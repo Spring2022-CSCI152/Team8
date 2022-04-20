@@ -4,25 +4,28 @@ import {
 } from 'react'
 import axios from 'axios'
 
+// Performs an async operation for the component.
+// Inputs:
+//     asyncFn: returns a Promise
+//     onSuccess: executed on the data retrieved from asyncFn
 function useAsync(asyncFn, onSuccess) {
-  useEffect(() => {
-    let isActive = true;
-    asyncFn().then(data => {
-      if (isActive) onSuccess(data);
-    });
-    return () => { isActive = false };
-  }, [asyncFn, onSuccess]);
+    useEffect(() => {
+        let isActive = true;
+        asyncFn().then(data => {
+            if (isActive) onSuccess(data);
+        });
+        return () => {
+            isActive = false
+        };
+    }, [asyncFn, onSuccess]);
 }
-function generateID() {
-    return Math.random().toString(16).slice(2)
-}
+
 function Editor(props) {
-    let initialState = {
-        content: ''
-    }
-    const [card, setCard] = useState(initialState)
+    const [card, setCard] = useState({
+        content: '',
+        id: props.id
+    })
     async function getCard() {
-        let result
         try {
             return await axios.get(`${process.env.REACT_APP_BASE_URL}/card?id=${props.id}`)
         } catch (e) {
@@ -33,16 +36,8 @@ function Editor(props) {
     const inputElem = <input id="card-content" type="text" onChange={handleOnChange} />
     async function save() {
         try {
-            if (props.id) {
-                let alreadyExists = true
-                while (alreadyExists) {
-                    card.id = generateID()
-                    try {
-                        await axios.get(`${process.env.REACT_APP_BASE_URL}/card?id=${card.id}`)
-                    } catch (e) {
-                        alreadyExists = false
-                    }
-                }
+            if (!props.id) {
+                card.id = Date.now().toString(36) + Math.random().toString(36).substr(2)  // a random, unique string
                 await axios.post(`${process.env.REACT_APP_BASE_URL}/card/new`, card)
             } else {
                 await axios.post(`${process.env.REACT_APP_BASE_URL}/card/update`, card)
@@ -52,6 +47,7 @@ function Editor(props) {
             throw e
         }
     }
+
     function handleOnChange(event) {
         card.content = event.target.value
         setCard(card)

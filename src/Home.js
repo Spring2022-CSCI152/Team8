@@ -7,7 +7,18 @@ const DeckList = [
 		{categoryText: "cat1"}, 
 		{categoryText: "cat2"}, 
 		{categoryText: "cat3"}, 
-		{categoryText: "cat4"}];
+		{categoryText: "cat4"},
+		{categoryText: "cat5"},
+		{categoryText: "cat6"},
+		{categoryText: "cat7"},
+		{categoryText: "cat8"},
+		{categoryText: "cat9"},
+		{categoryText: "cat10"},
+		{categoryText: "+"},
+		{categoryText: "cat12"},
+		{categoryText: "cat13"},
+		{categoryText: "cat14"},
+		{categoryText: "cat15"}];
 
 const Home = props => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -28,17 +39,14 @@ const Home = props => {
 	}
 	return <div>
 	  <div className="flashCardSets" style = {{
-		  display: "flex",
-		  flexDirection: "row",
-		  flexWrap: "nowrap",
-		  justifyContent: "space-around",
-		  alignItems: "center",
-		  alignContent: "stretch",
+
 	  }}>
 		  {list.map(({categoryText}) => (
 			<button key={categoryText} className="Cardz" onClick={() => togglePopup1(categoryText)}><b>{categoryText}</b></button>
-		  ))}
-		  <button className="flashCard" onClick={togglePopup}> + </button>
+			
+			))}
+			
+		  <button className="Cardz" onClick={togglePopup}><img className="FlashCard" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=612x612&w=0&h=wvzUqT3u3feYygOXg3GB9pYBbqIsyu_xpvfTX-6HOd0="></img></button>
 	  </div>
 	  {isOpen && <PopupNewFlashcardSet
         content={<>

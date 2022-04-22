@@ -57,7 +57,10 @@ const FlashCardView = props => {
     };
 
     const handleDeleteBtn = (index) => {
-        
+        const newCardList = cardList;
+        newCardList.splice(index,1);
+        setCardList(newCardList);
+  
     };
     
     //handles the events in the add card box

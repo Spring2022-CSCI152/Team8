@@ -1,7 +1,7 @@
 import cors from "cors"
 import express from "express"
 import pkg from '../Team8/database.mjs';
-const { setUpDB, getCards, getUsers, getClient } = pkg;
+const { setUpDB, getDeck, getUsers, getDecks, getClient } = pkg;
 
 const app = express();
 app.use(express.json());
@@ -35,15 +35,57 @@ app.post('/viewCards', async (req, res) => {
     var result;
 
     await setUpDB();
-    const users = getUsers();
-    var user = await users.findOne({ email: email});
+    var d = await getDeck(user, deck);
 
-    if (user == null) { // if user cant be found in database
-        result = { message: "Error: user doesn't exist" };
-        console.log("Error: user doesn't exist");
+    if (d == null) { // if user/deck cant be found in database
+        result = { message: "Error: user or deck doesn't exist" };
+        console.log("Error: user or deck doesn't exist");
     }
     else {
-        result = { Cards: await getCards(user, deck) };
+        result = { Deck: d };
+    }
+    getClient().close();
+    //console.log(result)
+    res.send(result);
+})
+
+app.post('/getShareCode', async (req, res) => {
+    const { email, deck } = req.body;
+    var result;
+
+    await setUpDB();
+    var d = await getDeck(email, deck);
+
+    if (d == null) { // if user/deck cant be found in database
+        result = { message: "Error: user or deck doesn't exist" };
+        console.log("Error: user or deck doesn't exist");
+    }
+    else {
+        var code = email + "_" + deck;
+        result = { code: code };
+    }
+
+    getClient().close();
+    //console.log(result)
+    res.send(result);
+})
+
+app.post('/recieveShareCode', async (req, res) => {
+    console.log("Share Code request recieved");
+    const { code } = req.body;
+    const { email, deckName } = code.split("_");
+    var result;
+    
+    await setUpDB();
+    const users = getUsers();
+    var d = await getDeck(email, id);
+
+    if (d == null) { // if user/deck cant be found in database
+        result = { message: "Error: code isn't valid" };
+    }
+    else
+    {
+        result = { Deck: d };
     }
     getClient().close();
     //console.log(result)

@@ -34,6 +34,14 @@ const Home = props => {
 		}
 		axios.post("http://localhost:5565/viewCards", request).then((response) =>
 			console.log(response.data))
+	}
+	function handleGenerate(email, deckName) {
+		const request = {
+			email: email,
+			deck: deckName
+		}
+		axios.post("http://localhost:5565/getShareCode", request).then((response) =>
+			console.log(response.data))
     }
 	return <div>
 	  <div className="flashCardSets" style = {{
@@ -78,7 +86,7 @@ const Home = props => {
 			  <button className="option" onClick={() => handleView("testuser@email.com", "deck1")} >View Flashcards</button><br></br>
 			  <button className="option">Edit Flashcards</button><br></br>
 			  <button className="option" onClick={() => handleDelete(catText)}>Delete Flashcards</button><br></br>
-			  <button className="option">Generate Share Link</button><br></br>
+			  <button className="option" onClick={() => handleGenerate("testuser@email.com", "deck1")} >Generate Share Link</button><br></br>
 		  </div>
         </>}
         handleClose={togglePopup1}

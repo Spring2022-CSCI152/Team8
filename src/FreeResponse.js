@@ -45,6 +45,9 @@ const FreeResponse = props => {
     //handles when user clicks next button
     const handleNextBtn = () => {
 
+        document.getElementById("b-Text").style.display='none';
+        setIsFlipped(false);
+
         if (index === cardList.length-1)
         {
             return;
@@ -53,6 +56,8 @@ const FreeResponse = props => {
         {
             setIndex(index + 1);
         }
+
+        setAnswer('');
 
         document.getElementById("checkBtn").style.display='block';
         document.getElementById("flipBtn").style.display='none';
@@ -71,14 +76,32 @@ const FreeResponse = props => {
 
     //handles the events that happen when the Save button is clicked
     const handleCheckBtn = (e) => {
+
+
         if (answer === cardList[index].back)
         {
             setNumCorrect(numCorrect + 1);
         }
+
+        if (index === cardList.length-1)
+        {
+            document.getElementById("b-Text").style.display='block';
+            document.getElementById("checkBtn").style.display='none';
+            document.getElementById("nextBtn").style.display='none';
+            setIsFlipped(!isFlipped);
+            document.getElementById("flipBtn").style.display='block';
+            document.getElementById("saveScoreBtn").style.display='block';
+        }
+
+        else{
+        document.getElementById("b-Text").style.display='block';
         document.getElementById("checkBtn").style.display='none';
         setIsFlipped(!isFlipped);
         document.getElementById("flipBtn").style.display='block';
         document.getElementById("nextBtn").style.display='block';
+        }
+
+        
     };
 
     const [numCorrect, setNumCorrect] = useState(0);
@@ -177,7 +200,10 @@ const FreeResponse = props => {
                 <button className="checkAnswer" id="checkBtn" onClick={handleCheckBtn}>Check Answer</button>
                 <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
                 <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
+                <button role="saveScore" id="saveScoreBtn" style={{display:"none"}}>Save Score</button>
             </div>
+
+           
         </div>
     </div>
 

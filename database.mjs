@@ -46,4 +46,5 @@ function getClient() {
     return client;
 }
 
+
 export default{ setUpDB, getDeck, getUsers, getDecks, getClient };

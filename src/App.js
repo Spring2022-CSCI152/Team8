@@ -6,10 +6,14 @@ import Home from './Home';
 function App() {
   return (
     <Router>
-		<Navbar />
-		<Routes>
+		<div className="App">
+		  <div className="content">
+				  <Routes>
 		  <Route exact path="/" element={<Home />}/>
-		</Routes>
+		  <Route path="/login" element={<Login />}/>
+			</Routes>
+		  </div>
+		</div>
 	</Router> 
   );
 }

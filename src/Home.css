@@ -1,25 +1,17 @@
-.flashCard{
-	height: 200px;
-	width: 300px;
-	background-color: #fff;
-	border: none;
-	font-size: 70px;
-	
-}
 .Cardz {
 	height: 200px;
 	width: 300px;
 	font-size: 20px;
 	background-color: #fff;
 	border: none;
+	margin: 1px;
 }
-
-.flashCard:hover {
-	background-color: #EEEEEE;
-}
-
 .Cardz:hover {
 	background-color: #EEEEEE;
+}
+.FlashCard {
+	width: 150px;
+	height: 150px;
 }
 
 /* Popup style */

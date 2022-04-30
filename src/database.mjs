@@ -19,8 +19,25 @@ async function setUpDB() {
 function getDB() {
     return db;
 }
-function getCards() {
-    return cards;
+async function getDecks(user) {
+    const { email, password } = user;
+    const { Decks } = await users.findOne({email: email, password: password});
+    //console.log(Decks)
+    return Decks;
+}
+
+async function getDeck(email, deck)
+{
+    const u = await users.findOne({email: email});
+    if (u == null)
+    {
+        console.log("user does not exist")
+        return null
+    }
+    
+    const {Decks} = u;
+    const d = Decks.find(({ Title }) => Title === deck );
+    return d;
 }
 function getUsers() {
     return users;
@@ -29,4 +46,5 @@ function getClient() {
     return client;
 }
 
-export default{ setUpDB, getDB, getCards, getUsers, getClient };
+
+export default{ setUpDB, getDeck, getUsers, getDecks, getClient };

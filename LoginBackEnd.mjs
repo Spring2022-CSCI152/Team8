@@ -13,8 +13,9 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     await setUpDB();
     const users = getUsers();
-    if (await users.findOne({ email: email, password: password }) != null) { // if user can be found in database
-        result = { message: "login successful", user: await users.findOne({ email: email, password: password })}; // send success message and user
+    const user = await users.findOne({ email: email, password: password });
+    if (user != null) { // if user can be found in database
+        result = { message: "login successful", user: user}; // send success message and user
     }
     else {
         result = {message: "incorrect email or password"};

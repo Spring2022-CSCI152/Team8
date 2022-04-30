@@ -1,0 +1,34 @@
+<<<<<<< HEAD
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Login from './Login';
+import Home from './Home';
+
+function App() {
+  return (
+    <Router>
+		<div className="App">
+		  <div className="content">
+				  <Routes>
+		  <Route exact path="/" element={<Home />}/>
+		  <Route path="/login" element={<Login />}/>
+			</Routes>
+		  </div>
+		</div>
+	</Router> 
+  );
+=======
+import Editor from './Editor'
+import {Link} from 'react-router-dom'
+
+function App() {
+    return (
+        <div className="app">
+            <Link to="/card">
+                <button>New Card</button>
+            </Link>
+        </div>
+    );
+>>>>>>> crud
+}
+
+export default App;

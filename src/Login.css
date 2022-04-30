@@ -1,0 +1,22 @@
+.btn {
+	background-color: #AA14F0;
+	font-size:16px;
+	width: 75%;
+	padding: 5px 0px;
+}
+
+input {
+	border-color: #000;
+}
+
+h1 {
+	background-color: black;
+	width: 100%;
+	color: #BC8CF2;
+	text-align: center;
+	padding: 10px 0px;
+}
+body {
+	background: #000;
+	background: linear-gradient(90deg, rgba(170,20,240,1) 0%, rgba(188,140,242,1) 100%);
+}

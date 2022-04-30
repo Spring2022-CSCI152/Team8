@@ -4,7 +4,24 @@ import axios from "axios";
 import "./FlashCardView.css"
 
 const FlashCardList = [
+    {
+        front: "front0",
+        back: "back0"
+    },
 
+    {
+        front: "front1",
+        back: "back1"
+    },
+
+    {
+        front: "front2",
+        back: "back2"
+    },
+    {
+        front: "front3",
+        back: "back3"
+    }
 ]
 
 //This is a functional component. It holds all the functions
@@ -56,11 +73,13 @@ const FlashCardView = props => {
         setBackEdit(cardList[index].back);
     };
 
-    const handleDeleteBtn = (index) => {
-        const newCardList = cardList;
+    const handleDeleteBtn = () => {
+        let newCardList = cardList;
         newCardList.splice(index,1);
         setCardList(newCardList);
-  
+
+        handlePrevBtn();
+        
     };
     
     //handles the events in the add card box
@@ -69,13 +88,13 @@ const FlashCardView = props => {
     const [submittedAdd, setSubmittedAdd] = useState(false);
 
     // Handling the change to front text of add card
-	const handleFrontAdd = (e) => {
+    const handleFrontAdd = (e) => {
         setFrontAdd(e.target.value);
             setSubmittedAdd(false);
         };
 
     // Handling the change to back text of add card
-	const handleBackAdd = (e) => {
+    const handleBackAdd = (e) => {
         setBackAdd(e.target.value);
             setSubmittedAdd(false);
         };
@@ -106,13 +125,13 @@ const FlashCardView = props => {
     const [submittedEdit, setSubmittedEdit] = useState(false);
 
     // Handling the change to front text of edit card
-	const handleFrontEdit = (e) => {
+    const handleFrontEdit = (e) => {
         setFrontEdit(e.target.value);
             setSubmittedEdit(false);
         };
 
     // Handling the change to back text of edit card
-	const handleBackEdit = (e) => {
+    const handleBackEdit = (e) => {
         setBackEdit(e.target.value);
             setSubmittedEdit(false);
         };
@@ -127,6 +146,10 @@ const FlashCardView = props => {
       const newCardList = cardList;
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
+
+      document.getElementById("edit-card-box").style.display='none';
+      setFrontEdit('');
+      setBackEdit('');
     };
 
     //handles the events that happen when the Cancel button is clicked
@@ -336,6 +359,5 @@ const FlashCardView = props => {
             );
     }
 }
-
 
 export default FlashCardView;

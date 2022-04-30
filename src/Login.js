@@ -19,6 +19,7 @@ const Login = props => {
 	const [confirmPass, setCPassword] = useState('');
 	const [user, setUser] = useState();
 
+
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState(false);
 
@@ -90,7 +91,6 @@ const Login = props => {
 		else {
 			setSubmitted(true);
 			setError(false);
-
 			const user = { email, password };
 			axios.post("http://localhost:5565/login", user).then((response) => {
 							console.log(response.data.message)

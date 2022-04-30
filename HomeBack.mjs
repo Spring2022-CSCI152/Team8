@@ -35,7 +35,7 @@ app.post('/viewCards', async (req, res) => {
     var result;
 
     await setUpDB();
-    var d = await getDeck(user, deck);
+    var d = await getDeck(email, deck);
 
     if (d == null) { // if user/deck cant be found in database
         result = { message: "Error: user or deck doesn't exist" };
@@ -73,12 +73,11 @@ app.post('/getShareCode', async (req, res) => {
 app.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
     const { code } = req.body;
-    const { email, deckName } = code.split("_");
+    const [ email, deckName ] = code.split("_");
     var result;
     
     await setUpDB();
-    const users = getUsers();
-    var d = await getDeck(email, id);
+    var d = await getDeck(email, deckName);
 
     if (d == null) { // if user/deck cant be found in database
         result = { message: "Error: code isn't valid" };

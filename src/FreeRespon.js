@@ -7,7 +7,7 @@ export default class LineChart extends Component {
 
 	componentDidMount() {
 		const ctx = this.chartRef.current.getContext("2d");
-		const scores = [55,55,50,52,50,88];
+		const scores = [65,45,50,62,40,88];
 		const labels = Array.from(Array(scores.length).keys());
 		
 		new Chart(ctx, {
@@ -27,7 +27,7 @@ export default class LineChart extends Component {
 				plugins: {
 				  title: {
 					display: true,
-					text: 'Matching'
+					text: 'Free Response'
 				  }
 				},
 				scales: {

@@ -1,7 +1,6 @@
 import cors from "cors"
 import express from "express"
-import pkg from '../Team8/database.mjs';
-const { setUpDB, getCards, getUsers, getClient } = pkg;
+import { setUpDB, getCards, getUsers, getClient } from '../database.mjs';
 
 const app = express();
 app.use(express.json());

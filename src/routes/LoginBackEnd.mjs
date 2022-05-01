@@ -2,7 +2,7 @@ import cors from "cors"
 import express from "express"
 import { setUpDB, getCards, getUsers, getClient } from '../database.mjs';
 
-const app = express();
+const app = express.Router();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
@@ -43,6 +43,4 @@ app.post('/registration', async (req, res) => {
     res.send(result);
 })
 
-app.listen(5565, () => {
-    console.log("listening on port 5565")
-})
+export default router

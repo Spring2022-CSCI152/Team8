@@ -1,7 +1,8 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Login from './Login';
-import Editor from './Editor'
-import {Link} from 'react-router-dom'
+import Navbar from "./navbar"
+import Home from './Home';
+import Login from './Login'
+
 
 function App() {
   return (

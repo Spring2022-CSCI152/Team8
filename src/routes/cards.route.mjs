@@ -41,6 +41,10 @@ router.get('/deck', async (req, res) => {
     }
 })
 router.post('/card/update', async (req, res) => {
+    if (req.body == null) {
+        res.status(400).send("request body cannot be null.")
+        return
+    }
     let user = await getUsers().findOne({email: req.query.email})
     let deck = await getDeck(req.query.email, req.query.deck)
     deck.Cards[req.query.index] = req.body
@@ -59,6 +63,10 @@ router.post('/card/update', async (req, res) => {
     }
 })
 router.post('/card/new', async (req, res) => {
+    if (req.body == null) {
+        res.status(400).send("request body cannot be null.")
+        return
+    }
     let user = await getUsers().findOne({email: req.query.email})
     let deck = await getDeck(req.query.email, req.query.deck)
     if (deck == null) {

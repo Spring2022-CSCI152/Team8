@@ -45,6 +45,10 @@ function getUsers() {
 function getClient() {
     return client;
 }
+async function getCard(email, deckTitle, index) {
+    const deck = await getDeck(email, deckTitle)
+    return deck.Cards[index]
+}
 
 
-export default{ setUpDB, getDeck, getUsers, getDecks, getClient };
+export { setUpDB, getDeck, getUsers, getDecks, getClient, getCard };

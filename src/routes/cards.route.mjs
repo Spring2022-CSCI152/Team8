@@ -29,6 +29,14 @@ async function upsert(req, res, isNew) {
         res.status(500).send("Failed to insert.")
     }
 }
+function getCard() {
+    const user = await getUsers().findOne(req.query.user)
+    if (result !== null) {
+        user.Decks.find(x => x.Title == req.query.deck)[req.query.index]
+    } else {
+        res.status(404).send("Document not found.")
+    }
+}
 router.delete('/card/delete', async (req, res) => {
     const result = await getCards().deleteOne(req.query)
     if (result.deletedCount === 1) {
@@ -38,12 +46,6 @@ router.delete('/card/delete', async (req, res) => {
     }
 })
 router.get('/card', async (req, res) => {
-    const result = await getCards().findOne(req.query)
-    if (result !== null) {
-        res.status(200).send(result)
-    } else {
-        res.status(404).send("Document not found.")
-    }
 })
 router.post('/card/update', async (req, res) => {
     upsert(req, res, false)

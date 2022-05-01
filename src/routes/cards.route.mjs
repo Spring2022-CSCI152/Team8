@@ -53,7 +53,7 @@ router.post('/card/update', async (req, res) => {
     try {
         result = await getUsers().replaceOne({email: req.query.email}, user)
     } catch (e) {
-        res.status(500).send("Index not found.")
+        res.status(404).send("Index not found.")
         return
     }
     if (result.modifiedCount > 0) {
@@ -70,7 +70,7 @@ router.post('/card/new', async (req, res) => {
     let user = await getUsers().findOne({email: req.query.email})
     let deck = await getDeck(req.query.email, req.query.deck)
     if (deck == null) {
-        res.status(500).send("Couldn't find deck.")
+        res.status(404).send("Couldn't find deck.")
     }
     deck.Cards.push(req.body)
     user.Decks[user.Decks.findIndex(x => x.Title == req.query.deck)] = deck

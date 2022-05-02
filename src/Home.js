@@ -53,6 +53,14 @@ const Home = props => {
 		}
 		axios.post("http://localhost:5565/getShareCode", request).then((response) =>
 			console.log(response.data))
+	}
+	function handleNew(email, deckName) {
+		const request = {
+			email: email,
+			deck: deckName
+		}
+		axios.post("http://localhost:5565/newDeck", request).then((response) =>
+		console.log(response.data))
     }
 	return <div>
 	  <div className="flashCardSets" style = {{
@@ -79,7 +87,7 @@ const Home = props => {
 			  <input type="text" className="textBox"></input>
 			  <br></br>
 			  <br></br>
-			  <button className="confirm">Confirm</button>
+			  <button className="confirm" onClick={() => handleNew("testuser3@email.com", "deck2")}>Confirm</button>
 		  </div>
         </>}
         handleClose={togglePopup}

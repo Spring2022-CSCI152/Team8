@@ -1,9 +1,9 @@
 import cors from "cors"
 import express from "express"
-import pkg from '../Team8/database.mjs';
-const { setUpDB, getDeck, getUsers, getDecks, getClient } = pkg;
+import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 
-const app = express();
+
+const app = express.Router();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
@@ -15,7 +15,7 @@ app.post('/', async (req, res) => {
     var result;
 
     await setUpDB();
-    const users = getUsers();
+    const users = await getUsers();
     var user = await users.findOne({ email: email, password: password });
 
     if (user == null) { // if user cant be found in database
@@ -69,7 +69,35 @@ app.post('/getShareCode', async (req, res) => {
     //console.log(result)
     res.send(result);
 })
+app.post('/newDeck', async (req,res) => {
+    console.log("New deck request recieved");
+    const {email, deck: deckName} = req.body;
+    var result;
+    console.log(deckName)
 
+   await setUpDB();
+   var d = await getDecks(email)
+
+   if(d == null) {
+        result = {message: "Error: user does not exist" };
+   }
+   else {
+        if(d.find(({ Title }) => Title === deckName ) == null) {
+            d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
+            const users = getUsers();
+            const u = await users.findOne({email: email})
+            console.log(d)
+            await users.update({_id: u._id}, {$set:{"Decks" : d}})
+            result = {message: "Deck creation successful"}
+        }
+        else {
+            result = {message: "Error: deck already exists" }
+        }
+   }
+   getClient().close();
+    //console.log(result)
+    res.send(result);
+});
 app.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
     const { code } = req.body;
@@ -91,6 +119,4 @@ app.post('/recieveShareCode', async (req, res) => {
     res.send(result);
 })
 
-app.listen(5565, () => {
-    console.log("listening on port 5565")
-})
+export default app

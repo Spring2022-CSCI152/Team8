@@ -1,6 +1,6 @@
 import cors from "cors"
 import express from "express"
-import { setUpDB, getCards, getUsers, getClient } from '../database.mjs';
+import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 
 const app = express.Router();
 app.use(express.json());
@@ -21,7 +21,7 @@ app.post('/login', async (req, res) => {
         result = {message: "incorrect email or password"};
     }
 
-    //client.close();
+    getClient().close();
     console.log(result);
     res.send(result);
 })
@@ -36,11 +36,12 @@ app.post('/registration', async (req, res) => {
         result = {message: "user already exists"};
     }
     else {
-        const user = { email: email, password: password };
+        const user = { email: email, password: password, Decks: {} };
         await users.insertOne(user); //add user to database
         result = { message: "registration successful", user: user}
     }
+    getClient().close();
     res.send(result);
 })
 
-export default router
+export default app

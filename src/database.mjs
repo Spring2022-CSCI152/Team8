@@ -19,9 +19,14 @@ async function setUpDB() {
 function getDB() {
     return db;
 }
-async function getDecks(user) {
-    const { email, password } = user;
-    const { Decks } = await users.findOne({email: email, password: password});
+async function getDecks(email) {
+   const u = await users.findOne({email: email});
+    if (u == null)
+    {
+        console.log("user does not exist")
+        return null
+    }
+    const {Decks} = u;
     //console.log(Decks)
     return Decks;
 }

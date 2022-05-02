@@ -1,11 +1,7 @@
-import cors from "cors"
 import express from "express"
 import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 
 const app = express.Router();
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
 
 app.post('/login', async (req, res) => {
     console.log("login request recieved");

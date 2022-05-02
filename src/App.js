@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import FlashCardView from './FlashCardView';
 import Navbar from "./navbar"
 import Home from './Home';
 import Login from './Login'
@@ -10,6 +11,7 @@ function App() {
 		<div className="App">
 		  <div className="content">
 				  <Routes>
+            <Route path="/FlashCardView" element={<FlashCardView/>}/>
 					  <Route path="/login" element={<Login />} />
 					  <Route path="/" element={<Home />} />
 			</Routes>
@@ -20,3 +22,4 @@ function App() {
 }
 
 export default App;
+

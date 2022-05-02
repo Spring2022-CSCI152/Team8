@@ -9,19 +9,18 @@ import Login from './Login'
 function App() {
   return (
     <Router>
-		<div className="App">
-		  <div className="content">
-				  <Routes>
-            <Route path="/FreeResponse" element={<FreeResponse/>}/>
-            <Route path="/FlashCardView" element={<FlashCardView/>}/>
-					  <Route path="/login" element={<Login />} />
-					  <Route path="/" element={<Home />} />
-			</Routes>
-		  </div>
-		</div>
-	</Router> 
+        <div className="App">
+            <div className="content">
+                <Routes>
+                    <Route path="/" element={<Home />}/>
+                    <Route path="/FreeResponse" element={<FreeResponse/>}/>
+                    <Route path="/login" element={<Login />}/>
+                    <Route path="/FlashCardView" element={<FlashCardView/>}/>
+                </Routes>
+            </div>
+        </div>
+    </Router> 
   );
 }
 
 export default App;
-

@@ -1,14 +1,10 @@
-import cors from "cors"
 import express from "express"
 import { setUpDB, getDeck, getUsers, getDecks, getClient} from '../database.mjs';
 
 
-const app = express.Router();
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
+const router = express.Router();
 
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     console.log("Homepage request recieved");
     
     const { email, password } = req.body;
@@ -29,7 +25,7 @@ app.post('/', async (req, res) => {
     res.send(result);
 })
 
-app.post('/viewCards', async (req, res) => {
+router.post('/viewCards', async (req, res) => {
     console.log("CardView request recieved");
     const { email, deck } = req.body;
     var result;
@@ -49,7 +45,7 @@ app.post('/viewCards', async (req, res) => {
     res.send(result);
 })
 
-app.post('/getShareCode', async (req, res) => {
+router.post('/getShareCode', async (req, res) => {
     const { email, deck } = req.body;
     var result;
 
@@ -69,7 +65,7 @@ app.post('/getShareCode', async (req, res) => {
     //console.log(result)
     res.send(result);
 })
-app.post('/newDeck', async (req,res) => {
+router.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
@@ -98,7 +94,7 @@ app.post('/newDeck', async (req,res) => {
     //console.log(result)
     res.send(result);
 });
-app.post('/recieveShareCode', async (req, res) => {
+router.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
     const { code } = req.body;
     const [ email, deckName ] = code.split("_");
@@ -119,7 +115,7 @@ app.post('/recieveShareCode', async (req, res) => {
     res.send(result);
 })
 
-app.post('/score/new', async (req, res) => {
+router.post('/score/new', async (req, res) => {
     await setUpDB()
     let user = await getUsers().findOne({email: req.query.email})
     let deck = user.Decks.find(x => x.Title == req.query.deck)
@@ -131,4 +127,4 @@ app.post('/score/new', async (req, res) => {
     getClient().close()
 })
 
-export default app
+export default router

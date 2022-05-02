@@ -1,0 +1,49 @@
+#chart {
+	margin-top: 4%;
+  display: block;
+  width: 70%;
+  height: 70%;
+}
+
+#graph {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#type {
+  display: block;
+  border-collapse: collapse;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 15%;
+  padding: 0% 0% 10% 0%;
+  box-shadow: 5px 5px 5px 2px #efefef;
+}
+
+h1 {
+	color: #cf5fff;
+	background-color: #000;
+	text-align: center;
+	
+}
+button {
+	font-size: 18px;
+	margin-left: 10%;
+	margin-bottom: 3%;
+}
+
+.cont1 {
+	background-color: #efc9fe;
+	border: none;
+	border-radius: 10px;
+	padding: 3%;
+}
+
+.cont2 {
+	background-color: #cf5fff;
+	border: none;
+	border-radius: 10px;
+	padding: 3%;
+}

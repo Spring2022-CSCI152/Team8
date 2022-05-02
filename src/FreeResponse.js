@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
-import PopupScore from "./PopupScore";
-import "./Matching.css"
 import axios from "axios";
 
 
@@ -87,12 +85,12 @@ const FreeResponse = props => {
 
         if (index === cardList.length-1)
         {
-            document.getElementById("b-Text").style.display='block';
-            document.getElementById("checkBtn").style.display='none';
-            document.getElementById("nextBtn").style.display='none';
             setIsFlipped(!isFlipped);
-            document.getElementById("flipBtn").style.display='block';
-            document.getElementById("saveScoreBtn").style.display='block';
+            document.getElementById("answer-card-box").style.display='none';
+            document.getElementById("score-card-box").style.display='block';
+            document.getElementById("b-Text").style.display='block';
+            setIsFlipped(!isFlipped);
+
         }
 
         else{
@@ -112,134 +110,129 @@ const FreeResponse = props => {
     const [isOpen, setIsOpen] = useState(false); /***need this***/
     const [percent, setPercent] = useState(0); /***need this***/
 
-    const togglePopup = () => {
-		
-		/***This code is to calculate percentage. This will be different for you***/
-		var correct = numCorrect;
-	
-		var number = (numCorrect/possCorrect)*100;
-			setPercent(number.toFixed(2)); 
-		
-		setIsOpen(!isOpen); /***need this***/
-	}
+    var number = (numCorrect/possCorrect)*100;
+
+
+    //handles when user clicks saveScore button
+    const handleSaveScoreBtn = () => {
+
     
-        return (
-            <>
-                <header>
-                    <div className="container">
-                        <div className="nav">
-                            <h10>Free Response</h10>
-                            <div>
-                                <h20>Score: {numCorrect}/{possCorrect}</h20>
-                            </div>
-                        </div>
+
+    };
+		
+		
+
+    return (
+    <>
+        <header>
+            <div className="container">
+                <div className="nav">
+                    <h10>Free Response</h10>
+                    <div>
+                        <h20>Score: {numCorrect}/{possCorrect}</h20>
                     </div>
-                </header>
+                </div>
+            </div>
+        </header>
         
-            <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto"}}>
-              
-                    <div style={{
-                        backgroundColor: "#EEEEEE",
-                        height: 500,
-                        width: 500,
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        maxWidth: 1080, margin: 0, margin: "auto",
-                    }}
-                    >
-                        
-                        <form>
-                            <div className="cardInfo">
-                                <div>Front</div>
-                                <div>{index + 1 }/{cardList.length}</div>
-                            </div>
-                  
-                            <input
-                                type="text"
-                                className="cardInput"
-                                style={{ fontSize: 18, alignContent: "center" }}
-                                id="f-Text"
-                                readOnly="true"
-                                placeholder="Front Text"
-                                value={cardList[index].front} />
-                                <br />
-                        </form>
-                  
-                    </div>
-                    <div style={{
-                        backgroundColor: "#EEEEEE",
-                        height: 500,
-                        width: 500,
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        maxWidth: 1080, margin: 0, margin: "auto",
-                    }}
-                    >
-        
-                        <form>
+        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto"}}>
+            
+                <div style={{
+                    backgroundColor: "#EEEEEE",
+                    height: 500,
+                    width: 500,
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    maxWidth: 1080, margin: 0, margin: "auto",
+                }}
+                >
+                    
+                    <form>
                         <div className="cardInfo">
-                                <div>Back</div>
-                                <div>{index + 1 }/{cardList.length}</div>
-                            </div>
-                  
-                            <input
-                                type="text"
-                                className="cardInput"
-                                style={{ fontSize: 18, alignContent: "center" }}
-                                id="b-Text"
-                                readOnly="true"
-                                placeholder="Back Text"
-                                value={cardList[index].back} /><br />
-                        </form>
-        
-                    </div>
-                </ReactCardFlip>
+                            <div>Front</div>
+                            <div>{index + 1 }/{cardList.length}</div>
+                        </div>
+                
+                        <input
+                            type="text"
+                            className="cardInput"
+                            style={{ fontSize: 18, alignContent: "center" }}
+                            id="f-Text"
+                            readOnly="true"
+                            placeholder="Front Text"
+                            value={cardList[index].front} />
+                            <br />
+                    </form>
+                
+                </div>
+                <div style={{
+                    backgroundColor: "#EEEEEE",
+                    height: 500,
+                    width: 500,
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    maxWidth: 1080, margin: 0, margin: "auto",
+                }}
+                >
+    
+                    <form>
+                    <div className="cardInfo">
+                            <div>Back</div>
+                            <div>{index + 1 }/{cardList.length}</div>
+                        </div>
+                
+                        <input
+                            type="text"
+                            className="cardInput"
+                            style={{ fontSize: 18, alignContent: "center" }}
+                            id="b-Text"
+                            readOnly="true"
+                            placeholder="Back Text"
+                            value={cardList[index].back} /><br />
+                    </form>
+    
+                </div>
+        </ReactCardFlip>
 
 
         <div class="answerContainer">
-        <div className="cardBoxAnswer" id="answer-card-box" data-testid="answer-card-box">
-            <h20>Answer:</h20>
-            <div className="textAreas">
-                <textarea 
-                    className="answer" 
-                    id="answer-text" 
-                    style={{textAlign:"center"}}
-                    placeholder="Enter answer here" 
-                    value={answer}
-                    onChange={handleAnswer}>
-                </textarea>
+            <div className="cardBoxAnswer" id="answer-card-box" data-testid="answer-card-box">
+                <h20>Answer:</h20>
+                <div className="textAreas">
+                    <textarea 
+                        className="answer" 
+                        id="answer-text" 
+                        style={{textAlign:"center"}}
+                        placeholder="Enter answer here" 
+                        value={answer}
+                        onChange={handleAnswer}>
+                    </textarea>
+                </div>
+                <div className="cardAnswerBtn">
+                    <button className="checkAnswer" id="checkBtn" onClick={handleCheckBtn}>Check Answer</button>
+                    <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
+                    <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
+                </div>
             </div>
-            <div className="cardAnswerBtn">
-                <button className="checkAnswer" id="checkBtn" onClick={handleCheckBtn}>Check Answer</button>
-                <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
-                <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
-                <button role="saveScore" id="saveScoreBtn" style={{display:"none"}} onClick={togglePopup}>Save Score</button>
+        </div>       
+
+        <div class="scoreContainer">
+            <div className="cardBoxScore" id="score-card-box" data-testid="score-card-box">
+                <h20>Score:</h20>
+                <div className="scorePercentage">{number}%</div>
+                <div className="cardScoreBtn">
+                    <button role="saveScore" id="nextBtn" onClick={handleSaveScoreBtn}>Save Score</button>
+                </div>
             </div>
-        </div>
-
-        {isOpen && <PopupScore
-        	content={<>
-          		<h1>Score</h1>
-          		<div>
-			  <p id="percent"> {percent}% </p>
-			  <div>
-				<button id="Pop" style={{marginRight: 40}}>View Incorrect Answers</button>
-				<button id="Pop">Back to home page</button>
-			  </div>
-		  	</div>
-        	</>}
-        	handleClose={togglePopup}
-      		/>}
-
-    </div>       
+        </div>   
 
     
-        </>
-            );
+    </>
+    );
 }
 
 

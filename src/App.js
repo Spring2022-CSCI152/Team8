@@ -3,8 +3,9 @@ import FreeResponse from './FreeResponse';
 import FlashCardView from './FlashCardView';
 import Navbar from "./navbar"
 import Matching from './Matching';
-{/*import Home from './Home';*/}
-{/*import Login from './Login';*/}
+import Graph from './Graph';
+import Home from './Home';
+import Login from './Login';
 
 
 function App() {
@@ -12,9 +13,12 @@ function App() {
     <Router>
 		<Navbar />
 		<Routes>
-		  {/*<Route exact path="/" element={<Home />}/>*/}
-			  {/*<Route path="/login" element={<Login />}*/}
-			  <Route path="/matching" element={<Matching />}/>
+			<Route exact path="/" element={<Home />}/>
+			<Route path="/login" element={<Login />} />
+			<Route path="/view" element={<FlashCardView />} />
+			<Route path="/freeResponse" element={<FreeResponse />} />
+			<Route path="/matching" element={<Matching />}/>
+			<Route path="/graph" element={<Graph />}/>
 		</Routes>
 	</Router> 
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LineChart from "./Matching.js";
+import LineChart from "./Match.js";
 import LineChart1 from "./FreeRespon.js";
 import "./Graph.css";
 

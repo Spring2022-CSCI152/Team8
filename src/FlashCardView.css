@@ -1,0 +1,185 @@
+ReactCardFlip {
+    margin: auto;
+    margin-top: 20px;
+}
+
+.cardInput {
+    border-color: #000;
+    word-wrap: break-word;
+    word-break: break-word;
+    height: 400px;
+    width: 400px;
+    text-align: center;
+}
+
+.cardNavBtn {
+    font-size:16px;
+    text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.changeBtn {
+    font-size:16px;
+    text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+
+ReactCardFlip {
+    margin: auto;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+    }
+    
+.cardBox{
+    display: none;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+    
+    
+.cardBox textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    border: 1px solid lightslategray;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    width: 95%;
+    margin: auto;
+}
+
+.textAreas {
+    margin: auto;
+    margin-top: 10px;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h10{
+    font-size: 3rem;
+}
+
+h20{
+    font-size: 1rem;
+}
+
+h30{
+    font-size: 3rem;
+    margin: auto;
+    text-align: center;
+}
+    
+.cardBoxEmpty{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cardInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.cardBoxAnswer{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cardBoxAnswer textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    border: 1px solid lightslategray;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cardAnswerBtn {
+    font-size:16px;
+    text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.cardBoxScore{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.cardScoreBtn {
+    font-size:16px;
+    text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.scorePercentage {
+    font-size: medium;
+    text-align: center;
+    align-items: center;
+}

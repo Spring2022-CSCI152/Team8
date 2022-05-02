@@ -1,6 +1,6 @@
 import cors from "cors"
 import express from "express"
-import { setUpDB, getDeck, getUsers, getDecks, getClient, getUsers, getCards } from '../database.mjs';
+import { setUpDB, getDeck, getUsers, getDecks, getClient} from '../database.mjs';
 
 
 const app = express.Router();
@@ -129,6 +129,6 @@ app.post('/score/new', async (req, res) => {
         deck.MScores.push(req.body.score)
     }
     getClient().close()
-}
+})
 
 export default app

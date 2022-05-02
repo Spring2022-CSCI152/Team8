@@ -1,19 +1,20 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Navbar from "./navbar"
-import Matching from './Matching';
-{/*import Home from './Home';*/}
-{/*import Login from './Login';*/}
+import Home from './Home';
+import Login from './Login'
 
 
 function App() {
   return (
     <Router>
-		<Navbar />
-		<Routes>
-		  {/*<Route exact path="/" element={<Home />}/>*/}
-			  {/*<Route path="/login" element={<Login />}*/}
-			  <Route path="/matching" element={<Matching />}/>
-		</Routes>
+		<div className="App">
+		  <div className="content">
+				  <Routes>
+					  <Route path="/login" element={<Login />} />
+					  <Route path="/" element={<Home />} />
+			</Routes>
+		  </div>
+		</div>
 	</Router> 
   );
 }

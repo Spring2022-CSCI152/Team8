@@ -153,3 +153,33 @@ h30{
     justify-content: center;
 }
 
+.cardBoxScore{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.cardScoreBtn {
+    font-size:16px;
+    text-align: center;
+    align-items: center;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.scorePercentage {
+    font-size: medium;
+    text-align: center;
+    align-items: center;
+}

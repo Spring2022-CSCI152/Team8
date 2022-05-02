@@ -1,6 +1,6 @@
 import cors from "cors"
 import express from "express"
-import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
+import { setUpDB, getDeck, getUsers, getDecks, getClient, getUsers, getCards } from '../database.mjs';
 
 
 const app = express.Router();
@@ -118,5 +118,17 @@ app.post('/recieveShareCode', async (req, res) => {
     //console.log(result)
     res.send(result);
 })
+
+app.post('/score/new', async (req, res) => {
+    await setUpDB()
+    let user = await getUsers().findOne({email: req.query.email})
+    let deck = user.Decks.find(x => x.Title == req.query.deck)
+    if (req.query.scoretype == "fr") {
+        deck.FRScores.push(req.body.score)
+    } else if (req.query.scoretype == "m") {
+        deck.MScores.push(req.body.score)
+    }
+    getClient().close()
+}
 
 export default app

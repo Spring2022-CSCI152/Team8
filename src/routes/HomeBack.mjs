@@ -80,7 +80,7 @@ app.post('/newDeck', async (req,res) => {
 
    if(d == null) {
         result = {message: "Error: user does not exist" };
-   }
+   }con
    else {
         if(d.find(({ Title }) => Title === deckName ) == null) {
             d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });

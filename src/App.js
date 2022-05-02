@@ -4,6 +4,7 @@ import FlashCardView from './FlashCardView';
 import Navbar from "./navbar"
 import Home from './Home';
 import Login from './Login'
+import Matching from './Matching'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/FlashCardView" element={<FlashCardView/>}/>
 					  <Route path="/login" element={<Login />} />
 					  <Route path="/" element={<Home />} />
+            <Route path="/matching" element={<Matching />} />  
 			</Routes>
 		  </div>
 		</div>
@@ -24,4 +26,3 @@ function App() {
 }
 
 export default App;
-

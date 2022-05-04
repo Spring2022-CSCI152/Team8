@@ -124,6 +124,13 @@ router.post('/score/new', async (req, res) => {
     } else if (req.query.scoretype == "m") {
         deck.MScores.push(req.body.score)
     }
+    user.Decks[user.Decks.findIndex(x => x.Title == req.query.deck)] = deck
+    const result = await getUsers().replaceOne({email: req.query.email}, user)
+    if (result.modifiedCount > 0) {
+        res.status(200).send("Success.")
+    } else {
+        res.status(500).send("Failed to insert.")
+    }
     getClient().close()
 })
 

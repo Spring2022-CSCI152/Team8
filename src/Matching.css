@@ -6,6 +6,9 @@
 	max-width: 1080;
 	margin: 0;
 	margin: auto;
+	background-color: #fff;
+	padding-bottom: 1%;
+	margin: 1%;
 }
 table{
 	margin-top: 10px;

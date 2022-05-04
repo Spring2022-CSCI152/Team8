@@ -28,6 +28,9 @@ const FlashCardList = [
 //This is a functional component. It holds all the functions
 //within it.
 const FreeResponse = props => {
+	if(localStorage.getItem('email') === null){
+		window.location = '/Login';
+	}
     const [index, setIndex] = useState(0);
 
     const [cardList, setCardList] = React.useState(FlashCardList);

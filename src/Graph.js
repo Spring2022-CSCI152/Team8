@@ -5,6 +5,10 @@ import "./Graph.css";
 
 const Graph = () => {
 	
+	if(localStorage.getItem('email') === null){
+		window.location = '/Login';
+	}
+	
 	const [style, setStyle] = useState("cont2");
 	const [style1, setStyle1] = useState("cont1");
 	const [chart, setChart] = useState(<LineChart />);
@@ -28,8 +32,8 @@ const Graph = () => {
       </div>
 	  <div id="type">
 		<h1> Study Type </h1>
-		<button className={style} onClick={changeStyle}> Matching </button><br></br>
-		<button className={style1} onClick={changeStyle1}> Free Response </button>
+		<button className={style} id="graphButton" onClick={changeStyle}> Matching </button><br></br>
+		<button className={style1} id="graphButton" onClick={changeStyle1}> Free Response </button>
 	  </div>
 	  </div>
     );   

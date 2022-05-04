@@ -3,6 +3,7 @@ import PopupNewFlashcardSet from './PopupNewFlashcardSet';
 import PopupFlashcardSet from './PopupFlashcardSet';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import Matching from './Matching';
 
 const DeckList = [
 		{categoryText: "cat1"}, 
@@ -16,12 +17,17 @@ const DeckList = [
 		{categoryText: "cat9"},
 		{categoryText: "cat10"},
 		{categoryText: "+"},
+		{categoryText: "+"},
 		{categoryText: "cat12"},
 		{categoryText: "cat13"},
 		{categoryText: "cat14"},
 		{categoryText: "cat15"}];
 
 const Home = props => {
+	if(localStorage.getItem('email') === null){
+		window.location = '/Login';
+	}
+	
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");

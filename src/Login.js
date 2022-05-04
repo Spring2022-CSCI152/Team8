@@ -6,10 +6,16 @@ import axios from "axios";
 //This is a functional component. It holds all the functions
 //within it.
 const Login = props => {
-
+	props.funcNav(false);
+	const userList = [
+		{email: "cat1", password: "dog"}, 
+		{email: "cat2", password: "bird"}, 
+		{email: "cat3", password: "horse"}, 
+	];
 	//Handling the Card flip
 	const [isFlipped, setIsFlipped] = useState(false);
 	const handleClick = () => {
+		setError(false);
 		setIsFlipped(!isFlipped);
 	};
 
@@ -22,14 +28,8 @@ const Login = props => {
 
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState(false);
+	const [errorM, setMessage] = useState("");
 
-	useEffect(() => {
-		const loggedInUser = localStorage.getItem("user");
-		if (loggedInUser) {
-			const foundUser = JSON.parse(loggedInUser);
-			setUser(foundUser);
-		}
-	}, []);
 
 	// Handling the email change
 	const handleEmail = (e) => {
@@ -57,11 +57,14 @@ const Login = props => {
 		//don't match, it sets the error to true.
 		if (email === '' || password === '' || password !== confirmPass) {
 			setError(true);
+			if (email === '' && password === ''){setMessage("Email and Password is blank");}
+			else if (email === ''){setMessage("Email is blank");}
+			else if (password === ''){setMessage("Password is blank");}
+			else if (password !== confirmPass){setMessage("Password fields don't match.")}
 		}
 		//Otherwise, the card is flipped and the sign up info 
 		//is sent to server
 		else {
-			console.log("login")
 			setSubmitted(true);
 			setError(false);
 			setIsFlipped(!isFlipped);
@@ -69,12 +72,12 @@ const Login = props => {
 				email: email,
 				password: password
 			}
-			axios.post("http://localhost:5565/registration", registered).then((response) => {
+			{/*axios.post("http://localhost:5565/registration", registered).then((response) => {
 				console.log(response.data)
 				window.location = '/login';
 			}).catch((res) => {
 				this.setState({...this.state, error: res.response.data.password}, console.log(this.state))
-			})
+			})*/}
 		}
 	};
 
@@ -82,17 +85,23 @@ const Login = props => {
 	const handleLoginbtn = (e) => {
 		e.preventDefault();
 		
+		const em = userList.filter(user => user.email === email);
+		const p = userList.filter(user => user.password === password);
+		
+		console.log(em.length + " " + p.length);
+		
 		//if the fields are left blank it sets the error to true.
 		if (email === '' || password === '') {
 			setError(true);
+		}		
+		else if ((em.length === 0) && (p.length === 0)){
+			setError(true);
 		}
-		//otherwise, the login info gets sent to server and
-		//the user gets sent to the home page.
 		else {
 			setSubmitted(true);
 			setError(false);
-			const user = { email, password };
-			axios.post("http://localhost:5565/login", user).then((response) => {
+			localStorage.setItem("email", JSON.stringify(email));
+				{/*axios.post("http://localhost:5565/login", user).then((response) => {
 							console.log(response.data.message)
 							//setUser(response.data);
 							if (response.data.message === "login successful") {
@@ -107,8 +116,8 @@ const Login = props => {
 							else if (user.password === ""){document.getElementById("error").innerHTML = "Must provide password."}
 							//else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
 							console.log(res)
-						})
-			if (user) {
+				})*/}
+			if (localStorage.getItem('email') !== null) {
 				window.location = '/';
 			}
 		}
@@ -118,10 +127,8 @@ const Login = props => {
 	const errorMessage = () => {
 		return (
 
-			<div
-				className="error"
-				style={{ display: error ? '' : 'none', }}>
-				<h3>There's an error with the forms</h3>
+			<div className="error" style={{ display: error ? '' : 'none', }}>
+				<h3>{errorM}</h3>
 			</div>
 		);
 	};
@@ -134,13 +141,14 @@ const Login = props => {
 
 			<div style={{//style and structure of the signup side
 				backgroundColor: "#EEEEEE",
-				height: 300,
-				width: 300,
+				height: 400,
+				width: 400,
 				display: "flex",
 				justifyContent: "space-around",
 				alignItems: "center",
 				flexDirection: "column",
 				maxWidth: 1080, margin: 0, margin: "auto",
+				marginTop: 100,
 			}}
 			>
 				<h1>Signup</h1>
@@ -152,18 +160,19 @@ const Login = props => {
 					<input type="password" style={{fontSize:18}} data-testid="S-password" placeholder="password" onChange={handlePassword} value={password}/><br/>
 					<input type="password" style={{fontSize:18}} data-testid="S-Cpassword" placeholder="confirm password" onChange={handleCPassword} value={confirmPass}/>
 				</form>
-				<button role="signUpBtn" className="btn" type="submit" onClick={handleSignupbtn}>Signup</button>
-				<button role="loginLink" onClick={handleClick} >Already have an account?</button>
+				<button role="signUpBtn" id="logBtn" type="submit" onClick={handleSignupbtn}>Signup</button>
+				<button role="loginLink" id="logBtn" onClick={handleClick} >Already have an account?</button>
 			</div>
 			<div style={{ //style and structure of the login side
 				backgroundColor: "#EEEEEE",
-				height: 300,
-				width: 300,
+				height: 400,
+				width: 400,
 				display: "flex",
 				justifyContent: "space-around",
 				alignItems: "center",
 				flexDirection: "column",
 				maxWidth: 1080, margin: 0, margin: "auto",
+				marginTop: 100,
 			}}
 			>
 				<h1>Login</h1>
@@ -174,8 +183,8 @@ const Login = props => {
 					<input type="email" style={{fontSize:18}} data-testid="L-email" placeholder="Email" onChange={handleEmail} value={email}/><br/>
 					<input type="password" style={{fontSize:18}} data-testid="L-password" placeholder="password" onChange={handlePassword} value={password}/><br/>
 				</form>
-				<button role="loginBtn" className="btn" type="submit" onClick={handleLoginbtn}>Login</button>
-				<button role="signUpLink" onClick={handleClick}>Don't have an account?</button>
+				<button role="loginBtn" id="logBtn" type="submit" onClick={handleLoginbtn}>Login</button>
+				<button role="signUpLink" id="logBtn" onClick={handleClick}>Don't have an account?</button>
 			</div>
 		</ReactCardFlip>
 	);

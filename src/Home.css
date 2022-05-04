@@ -38,11 +38,11 @@
   overflow: auto;
 }
 
-.close-icon {
+#close-icon {
   content: 'x';
   cursor: pointer;
   position: fixed;
-  right: calc(35% - 30px);
+  right: calc(30% - 40px);
   top: calc(100vh - 85vh - 33px);
   background: #ededed;
   width: 25px;
@@ -84,7 +84,7 @@ a {
 	font-size: 20px;
 }
 .options {
-	width: 100%;
+	width: 80%;
 	table-layout: fixed;
 	border-collapse: collapse;
 	background-color: #fff;

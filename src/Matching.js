@@ -4,6 +4,10 @@ import arrayShuffle from 'array-shuffle';
 
 const Matching = props => {
 	
+	if(localStorage.getItem('email') === null){
+		window.location = '/Login';
+	}
+	
 	const FlashCard = [
 		{
 			categoryText: "cat1",
@@ -22,9 +26,10 @@ const Matching = props => {
 		}, 
 	];
 	
-	const [isOpen, setIsOpen] = useState(false); /***need this***/
+	const cText = props.catText;
+	const [isOpen, setIsOpen] = useState(false);
 	const mixed = arrayShuffle(FlashCard);
-	const [percent, setPercent] = useState(0); /***need this***/
+	const [percent, setPercent] = useState(0);
 	const getAnswers = mixed => {
 		let content = [];
 		for (let i = 0; i < mixed.length; i++) {
@@ -34,10 +39,8 @@ const Matching = props => {
 		return content;
 	};
 	
-	/***need this function***/
 	const togglePopup = () => {
-		
-		/***This code is to calculate percentage. This will be different for you***/
+	
 		var correct = mixed;
 		var correctAnswers = mixed.map(function(value) {return value.cardBack;});
 		var Answer = getAnswers(correct);
@@ -46,13 +49,12 @@ const Matching = props => {
 		else {
 			correctAnswers.forEach(function(element, index) {if (element === Answer[index]){result.push(element);}})
 			
-			/***sets percent to display score. Might be a little different for you but its needed.***/
 			var number = (result.length/mixed.length)*100;
 			setPercent(number.toFixed(2)); 
 		}
 		
-		
-		setIsOpen(!isOpen); /***need this***/
+		console.log(cText);
+		setIsOpen(!isOpen);
 	}
 
 return (
@@ -80,7 +82,6 @@ return (
           ))}
         </tbody>
       </table>
-	/***From here***/
 	  <button id="submit" onClick={togglePopup}> Submit </button>
 	  {isOpen && <PopupScore
         	content={<>
@@ -95,7 +96,6 @@ return (
         	</>}
         	handleClose={togglePopup}
       		/>}
-	/***to here***/
 	 </div>
     )
  

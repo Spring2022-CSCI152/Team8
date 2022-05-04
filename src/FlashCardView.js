@@ -3,31 +3,32 @@ import ReactCardFlip from 'react-card-flip';
 import axios from "axios";
 import "./FlashCardView.css"
 
-const FlashCardList = [
-    {
-        front: "front0",
-        back: "back0"
-    },
-
-    {
-        front: "front1",
-        back: "back1"
-    },
-
-    {
-        front: "front2",
-        back: "back2"
-    },
-    {
-        front: "front3",
-        back: "back3"
-    }
-]
 
 //This is a functional component. It holds all the functions
 //within it.
 const FlashCardView = props => {
     const [index, setIndex] = useState(0);
+
+    const FlashCardList = [
+        {
+            front: "front0",
+            back: "back0"
+        },
+    
+        {
+            front: "front1",
+            back: "back1"
+        },
+    
+        {
+            front: "front2",
+            back: "back2"
+        },
+        {
+            front: "front3",
+            back: "back3"
+        }
+    ]
 
     const [cardList, setCardList] = React.useState(FlashCardList);
 
@@ -166,10 +167,10 @@ const FlashCardView = props => {
         <>
         <header>
         <div className="container">
-            <div className="nav">
-                <h10>Flash Cards</h10>
+            <div className="nav1">
+                <h9>Flash Cards</h9>
                 <div>
-                    <button className="addBtn" onClick={handleAddBtn}>Add Card</button>
+                    <button role="addBtn" onClick={handleAddBtn}>Add Card</button>
                     <button role="edit" onClick={handleEditBtn} >Edit</button>
                     <button role="delete" onClick={handleDeleteBtn}>Delete</button>
                 </div>
@@ -178,12 +179,12 @@ const FlashCardView = props => {
     </header> 
 
     <div className="emptyContainer">
-        <div class="cardBoxEmpty">Deck empty add cards</div>
+        <div className="cardBoxEmpty">Deck empty add cards</div>
     </div>
 
     <div class="addContainer">
         <div className="cardBox" id="add-card-box" data-testid="add-card-box">
-            <h20>New Flash Card</h20>
+            <h8>New Flash Card</h8>
             <div className="textAreas">
                 <textarea 
                     className="frontAdd" 
@@ -217,10 +218,10 @@ const FlashCardView = props => {
             <>
                     <header>
                     <div className="container">
-                        <div className="nav">
-                            <h10>Flash Cards</h10>
+                        <div className="nav1">
+                            <h9>Flash Cards</h9>
                             <div>
-                                <button className="addBtn" onClick={handleAddBtn}>Add Card</button>
+                                <button role="addBtn" onClick={handleAddBtn}>Add Card</button>
                                 <button role="edit" onClick={handleEditBtn}>Edit</button>
                                 <button role="delete" onClick={handleDeleteBtn}>Delete</button>
                             </div>
@@ -350,7 +351,7 @@ const FlashCardView = props => {
         
                     </div>
                 </ReactCardFlip>
-                        <div className="cardNavBtn" style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="cardNavBtn">
                             <button role="prev" onClick={handlePrevBtn}>Previous</button>
                             <button role="flip" onClick={handleClick}>Flip</button>
                             <button role="next" onClick={handleNextBtn}>Next</button>

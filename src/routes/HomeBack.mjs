@@ -49,6 +49,35 @@ app.post('/viewCards', async (req, res) => {
     res.send(result);
 })
 
+app.post('/deleteDeck', async (req, res) => {
+    console.log("Delete deck request recieved");
+    const {email, deck: deckName} = req.body;
+    var result;
+    //console.log(email)
+
+   await setUpDB();
+   var d = await getDecks(email)
+
+   if(d == null) {
+        result = {message: "Error: user does not exist" };
+   }
+   else {
+        if (d.find(({ Title }) => Title === deckName ) == null) {
+            result = {message: "Error: deck does not exist"};
+        }
+        else {
+            d = d.filter(Title => Title !== deckName);
+            const users = getUsers();
+            const u = await users.findOne({email: email})
+            await users.update({_id: u._id}, {$set:{"Decks" : d}})
+            result = {message: "Deck deletion successful"}
+        }
+    }
+    getClient().close();
+    //console.log(result)
+    res.send(result);
+})
+
 app.post('/getShareCode', async (req, res) => {
     const { email, deck } = req.body;
     var result;
@@ -73,7 +102,7 @@ app.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
-    console.log(email)
+    //console.log(email)
 
    await setUpDB();
    var d = await getDecks(email)
@@ -86,7 +115,6 @@ app.post('/newDeck', async (req,res) => {
             d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
             const users = getUsers();
             const u = await users.findOne({email: email})
-           // console.log(d)
             await users.update({_id: u._id}, {$set:{"Decks" : d}})
             result = {message: "Deck creation successful"}
         }

@@ -71,6 +71,18 @@
 	border: none;
 }
 
+.confirmLink {
+	padding: 3% 32%;
+	background-color: #000;
+	color: #AA14F0;
+	font-size: 20px;
+	border: none;
+}
+
+.confirmLink:hover {
+	background-color: #000;
+}
+
 .links {
 	padding: 10px 30px;
 	background-color: #000;

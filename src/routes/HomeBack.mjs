@@ -73,20 +73,20 @@ app.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
-    console.log(deckName)
+    console.log(email)
 
    await setUpDB();
    var d = await getDecks(email)
 
    if(d == null) {
         result = {message: "Error: user does not exist" };
-   }con
+   }
    else {
-        if(d.find(({ Title }) => Title === deckName ) == null) {
+        if (d.find(({ Title }) => Title === deckName ) == null) {
             d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
             const users = getUsers();
             const u = await users.findOne({email: email})
-            console.log(d)
+           // console.log(d)
             await users.update({_id: u._id}, {$set:{"Decks" : d}})
             result = {message: "Deck creation successful"}
         }
@@ -100,22 +100,30 @@ app.post('/newDeck', async (req,res) => {
 });
 app.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
-    const { code } = req.body;
-    const [ email, deckName ] = code.split("_");
     var result;
-    
-    await setUpDB();
-    var d = await getDeck(email, deckName);
-
-    if (d == null) { // if user/deck cant be found in database
+    const { code } = req.body;
+    if (code == null)
+    {
         result = { message: "Error: code isn't valid" };
     }
     else
     {
-        result = { Deck: d };
+        const [ email, deckName ] = code.split("_");
+    
+    
+        await setUpDB();
+        var d = await getDeck(email, deckName);
+
+        if (d == null) { // if user/deck cant be found in database
+            result = { message: "Error: code isn't valid" };
+        }
+        else
+        {
+            result = { Deck: d };
+        }
+        getClient().close();
+        //console.log(result)
     }
-    getClient().close();
-    //console.log(result)
     res.send(result);
 })
 

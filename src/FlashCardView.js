@@ -6,9 +6,20 @@ import "./FlashCardView.css"
 
 //This is a functional component. It holds all the functions
 //within it.
+
 const FlashCardView = props => {
     const [index, setIndex] = useState(0);
 
+    const request = {
+        email: email,
+        deck: deckName
+    }
+    var FlashCardList;
+    axios.post("http://localhost:5565/viewCards", request).then((response) => {
+        FlashCardList = response.data;
+    })
+
+    /*
     const FlashCardList = [
         {
             front: "front0",
@@ -29,7 +40,7 @@ const FlashCardView = props => {
             back: "back3"
         }
     ]
-
+    */
     const [cardList, setCardList] = React.useState(FlashCardList);
 
     //Handling the Card flip

@@ -36,7 +36,8 @@ app.post('/registration', async (req, res) => {
         result = {message: "user already exists"};
     }
     else {
-        const user = { email: email, password: password, Decks: {} };
+        const user = { email: email, password: password, Decks: [] };
+        //console.log(user)
         await users.insertOne(user); //add user to database
         result = { message: "registration successful", user: user}
     }

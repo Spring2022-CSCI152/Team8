@@ -66,7 +66,7 @@
 .confirm {
 	padding: 3% 32%;
 	background-color: #000;
-	color: purple;
+	color: #AA14F0;
 	font-size: 20px;
 	border: none;
 }
@@ -84,7 +84,6 @@ a {
 	font-size: 20px;
 }
 .options {
-	width: 80%;
 	table-layout: fixed;
 	border-collapse: collapse;
 	background-color: #fff;
@@ -94,6 +93,20 @@ a {
 	background-color: #fff;
 	font-size: 20px;
 	padding: 10px 0px;	
+	color: #000;
+}
+
+.optionLink{
+	width: 100%;
+	background-color: #fff;
+	font-size: 20px;
+	padding: 10px 0px;
+	border: none;
+	color: #000;
+}
+
+.optionLink:hover{
+	color: #AA14F0;
 }
 
 .option:hover{

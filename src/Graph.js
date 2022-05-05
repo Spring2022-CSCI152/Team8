@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom'
 import LineChart from "./Match.js";
 import LineChart1 from "./FreeRespon.js";
 import "./Graph.css";
@@ -8,6 +9,8 @@ const Graph = () => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
+	const location = useLocation()
+	const { title } = location.state
 	
 	const [style, setStyle] = useState("cont2");
 	const [style1, setStyle1] = useState("cont1");

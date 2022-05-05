@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { useLocation } from 'react-router-dom'
 import PopupScore from './PopupScore';
 import arrayShuffle from 'array-shuffle';
 
@@ -7,7 +8,8 @@ const Matching = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	
+	const location = useLocation()
+	const { title } = location.state
 	const FlashCard = [
 		{
 			categoryText: "cat1",
@@ -25,8 +27,6 @@ const Matching = props => {
 			cardBack: "that",
 		}, 
 	];
-	
-	const cText = props.catText;
 	const [isOpen, setIsOpen] = useState(false);
 	const mixed = arrayShuffle(FlashCard);
 	const [percent, setPercent] = useState(0);
@@ -52,8 +52,7 @@ const Matching = props => {
 			var number = (result.length/mixed.length)*100;
 			setPercent(number.toFixed(2)); 
 		}
-		
-		console.log(cText);
+
 		setIsOpen(!isOpen);
 	}
 

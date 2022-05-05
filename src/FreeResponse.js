@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useLocation } from 'react-router-dom'
 import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
 import axios from "axios";
@@ -31,6 +32,9 @@ const FreeResponse = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
+	const location = useLocation()
+	const { title } = location.state
+	
     const [index, setIndex] = useState(0);
 
     const [cardList, setCardList] = React.useState(FlashCardList);

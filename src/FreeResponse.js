@@ -30,7 +30,8 @@ const FlashCardList =
 //within it.
 const FreeResponse = props => {
     const [index, setIndex] = useState(0);
-
+    const email = "test"
+    const deck = "test"
     var FlashCardList;
     const request = {
     email: email

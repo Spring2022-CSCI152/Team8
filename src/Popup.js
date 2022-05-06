@@ -1,6 +1,6 @@
 import "./Home.css"
 
-const PopupNewFlashcardSet = props => {
+const Popup = props => {
 	return (
 	  <div className="popup-box">
 		<div className="box">
@@ -11,4 +11,4 @@ const PopupNewFlashcardSet = props => {
 	);
 };
 
-export default PopupNewFlashcardSet;
+export default Popup;

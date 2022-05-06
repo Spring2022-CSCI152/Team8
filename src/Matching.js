@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import { useLocation } from 'react-router-dom'
-import PopupScore from './PopupScore';
+import Popup from './Popup';
 import arrayShuffle from 'array-shuffle';
+import './Matching.css'
 
 const Matching = props => {
 	
@@ -82,16 +83,16 @@ return (
         </tbody>
       </table>
 	  <button id="submit" onClick={togglePopup}> Submit </button>
-	  {isOpen && <PopupScore
+	  {isOpen && <Popup
         	content={<>
           		<h1>Score</h1>
           		<div>
-			  <p id="percent"> {percent}% </p>
-			  <div>
-				<button id="Pop" style={{marginRight: 40}}>View Incorrect Answers</button>
-				<button id="Pop">Back to home page</button>
-			  </div>
-		  	</div>
+					<p id="percent"> {percent}% </p>
+					<div>
+						<button id="Pop" style={{marginRight: 40}}>View Incorrect Answers</button>
+						<button id="Pop">Back to home page</button>
+					</div>
+				</div>
         	</>}
         	handleClose={togglePopup}
       		/>}

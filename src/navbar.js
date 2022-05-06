@@ -10,7 +10,7 @@ const Navbar = () =>{
   return (
     <nav className="navbar">
 		<div className="links">
-		<a href="/"><FaHome size={50}/></a>
+		<a href="/" data-testid="homelink"><FaHome size={50}/></a>
 		<a href="/Login" onClick = {handleLogOut}><b>Log out</b></a>
 		</div>
 	</nav>

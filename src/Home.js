@@ -1,7 +1,6 @@
 import "./Home.css";
 import {Link} from 'react-router-dom'
-import PopupNewFlashcardSet from './PopupNewFlashcardSet';
-import PopupFlashcardSet from './PopupFlashcardSet';
+import Popup from './Popup';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Matching from './Matching';
@@ -81,7 +80,7 @@ const Home = props => {
 			
 		  <button className="Cardz" onClick={togglePopup}><img className="FlashCard" src="https://media.istockphoto.com/vectors/black-plus-sign-positive-symbol-vector-id688550958?k=20&m=688550958&s=612x612&w=0&h=wvzUqT3u3feYygOXg3GB9pYBbqIsyu_xpvfTX-6HOd0="></img></button>
 	  </div>
-	  {isOpen && <PopupNewFlashcardSet
+	  {isOpen && <Popup
         content={<>
           <h1>Create New Flashcard Set</h1>
           <div className="form">
@@ -100,7 +99,7 @@ const Home = props => {
         </>}
         handleClose={togglePopup}
       />}
-	  {isOpen1 && <PopupFlashcardSet
+	  {isOpen1 && <Popup
         content={<>
           <h1><i>{catText}</i></h1>
           <div className="options">

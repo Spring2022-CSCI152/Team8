@@ -15,8 +15,10 @@ const FlashCardView = props => {
         deck: deckName
     }
     var FlashCardList;
+    var deckName;
     axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        FlashCardList = response.data;
+        FlashCardList = response.data.Cards;
+        deckName = response.data.Title;
     })
 
     /*
@@ -89,7 +91,7 @@ const FlashCardView = props => {
         let newCardList = cardList;
         newCardList.splice(index,1);
         setCardList(newCardList);
-
+        axios.post('http://localhost:5565/card/delete?email=${email}&deck=${deckName}&index=${index}', {}).then((response) => {})
         handlePrevBtn();
         
     };
@@ -119,7 +121,7 @@ const FlashCardView = props => {
         newCard.back = backAdd;
 
         cardList.push(newCard);
-
+        axios.post('http://localhost:5565/card/new?email=${email}&deck=${deckName}', { newCard }).then((response) => { })
         setFrontAdd('');
         setBackAdd('');
     };
@@ -158,6 +160,8 @@ const FlashCardView = props => {
       const newCardList = cardList;
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
+
+        axios.post('http://localhost:5565/card/update?email=${email}&deck=${deckName}&index=${index}', { cardEdited }).then((response) => { })
 
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');

@@ -14,7 +14,7 @@ app.post('/', async (req, res) => {
     const { email, password } = req.body;
     var result;
 
-    await setUpDB();
+    //await setUpDB();
     const users = await getUsers();
     var user = await users.findOne({ email: email, password: password });
 
@@ -25,7 +25,7 @@ app.post('/', async (req, res) => {
     {
         result = { Decks: await getDecks(user) };
     }
-    getClient().close();
+    //getClient().close();
     res.send(result);
 })
 
@@ -34,7 +34,7 @@ app.post('/viewCards', async (req, res) => {
     const { email, deck } = req.body;
     var result;
 
-    await setUpDB();
+    //await setUpDB();
     var d = await getDeck(email, deck);
 
     if (d == null) { // if user/deck cant be found in database
@@ -44,7 +44,7 @@ app.post('/viewCards', async (req, res) => {
     else {
         result = { Deck: d };
     }
-    getClient().close();
+    //getClient().close();
     //console.log(result)
     res.send(result);
 })
@@ -55,7 +55,7 @@ app.post('/deleteDeck', async (req, res) => {
     var result;
     //console.log(email)
 
-   await setUpDB();
+   //await setUpDB();
    var d = await getDecks(email)
 
    if(d == null) {
@@ -73,7 +73,7 @@ app.post('/deleteDeck', async (req, res) => {
             result = {message: "Deck deletion successful"}
         }
     }
-    getClient().close();
+    //getClient().close();
     //console.log(result)
     res.send(result);
 })
@@ -94,7 +94,7 @@ app.post('/getShareCode', async (req, res) => {
         result = { code: code };
     }
 
-    getClient().close();
+    //getClient().close();
     //console.log(result)
     res.send(result);
 })
@@ -122,7 +122,7 @@ app.post('/newDeck', async (req,res) => {
             result = {message: "Error: deck already exists" }
         }
    }
-   getClient().close();
+   //getClient().close();
     //console.log(result)
     res.send(result);
 });
@@ -139,7 +139,7 @@ app.post('/recieveShareCode', async (req, res) => {
         const [ email, deckName ] = code.split("_");
     
     
-        await setUpDB();
+        //await setUpDB();
         var d = await getDeck(email, deckName);
 
         if (d == null) { // if user/deck cant be found in database
@@ -149,7 +149,7 @@ app.post('/recieveShareCode', async (req, res) => {
         {
             result = { Deck: d };
         }
-        getClient().close();
+       // getClient().close();
         //console.log(result)
     }
     res.send(result);

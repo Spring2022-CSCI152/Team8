@@ -7,42 +7,20 @@ import "./FlashCardView.css"
 //This is a functional component. It holds all the functions
 //within it.
 
-const FlashCardView = props => {
+const FlashCardView = async props => {
     const [index, setIndex] = useState(0);
 
     const request = {
-        email: email,
-        deck: deckName
+        email: "testuser3@email.com",
+        deck: "Deck1"
     }
     var FlashCardList;
     var deckName;
-    axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        FlashCardList = response.data.Cards;
-        deckName = response.data.Title;
+    await axios.post("http://localhost:5565/viewCards", request).then((response) => {
+        FlashCardList = response.data.Deck.Cards;
+        deckName = response.data.Deck.Title;
     })
 
-    /*
-    const FlashCardList = [
-        {
-            front: "front0",
-            back: "back0"
-        },
-    
-        {
-            front: "front1",
-            back: "back1"
-        },
-    
-        {
-            front: "front2",
-            back: "back2"
-        },
-        {
-            front: "front3",
-            back: "back3"
-        }
-    ]
-    */
     const [cardList, setCardList] = React.useState(FlashCardList);
 
     //Handling the Card flip

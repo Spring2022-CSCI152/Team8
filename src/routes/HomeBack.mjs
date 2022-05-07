@@ -30,10 +30,9 @@ app.post('/', async (req, res) => {
 })
 
 app.post('/viewCards', async (req, res) => {
-    console.log("CardView request recieved");
+    //console.log("CardView request recieved");
     const { email, deck } = req.body;
     var result;
-
     //await setUpDB();
     var d = await getDeck(email, deck);
 

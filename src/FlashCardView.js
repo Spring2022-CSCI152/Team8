@@ -7,21 +7,18 @@ import "./FlashCardView.css"
 //This is a functional component. It holds all the functions
 //within it.
 
-const FlashCardView = async props => {
+const FlashCardView = props => {
     const [index, setIndex] = useState(0);
-
-    const request = {
-        email: "testuser3@email.com",
-        deck: "Deck1"
-    }
-    var FlashCardList;
-    var deckName;
-    await axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        FlashCardList = response.data.Deck.Cards;
-        deckName = response.data.Deck.Title;
+    const [cardList, setCardList] = React.useState([]);
+    
+    const email = "testuser3@email.com";
+    const deck = "Deck1";
+    
+    axios.post("http://localhost:5565/viewCards", {email: email, deck: deck}).then((response) => {
+        setCardList(response.data.Deck.Cards);
     })
 
-    const [cardList, setCardList] = React.useState(FlashCardList);
+    
 
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -69,7 +66,7 @@ const FlashCardView = async props => {
         let newCardList = cardList;
         newCardList.splice(index,1);
         setCardList(newCardList);
-        //axios.post('http://localhost:5565/card/delete?email=${email}&deck=${deckName}&index=${index}', {}).then((response) => {})
+        axios.post('http://localhost:5565/card/delete?email=${email}&deck=${deckName}&index=${index}', {}).then((response) => {})
         handlePrevBtn();
         
     };
@@ -97,9 +94,8 @@ const FlashCardView = async props => {
 
         newCard.front = frontAdd;
         newCard.back = backAdd;
-
         cardList.push(newCard);
-       // axios.post('http://localhost:5565/card/new?email=${email}&deck=${deckName}', { newCard }).then((response) => { })
+        axios.post('http://localhost:5565/card/new?email=${email}&deck=${deckName}', { newCard })
         setFrontAdd('');
         setBackAdd('');
     };
@@ -139,7 +135,7 @@ const FlashCardView = async props => {
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
 
-        //axios.post('http://localhost:5565/card/update?email=${email}&deck=${deckName}&index=${index}', { cardEdited }).then((response) => { })
+       axios.post('http://localhost:5565/card/update?email=${email}&deck=${deckName}&index=${index}', { cardEdited }).then((response) => { })
 
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');
@@ -309,7 +305,7 @@ const FlashCardView = async props => {
                                 id="f-Text"
                                 readOnly="true"
                                 placeholder="Front Text"
-                                value={cardList[index].front} />
+                                value={cardList[index].Front} />
                                 <br />
                         </form>
                   
@@ -339,7 +335,7 @@ const FlashCardView = async props => {
                                 id="b-Text"
                                 readOnly="true"
                                 placeholder="Back Text"
-                                value={cardList[index].back} /><br />
+                                value={cardList[index].Back} /><br />
                         </form>
         
                     </div>
@@ -352,6 +348,7 @@ const FlashCardView = async props => {
                 </>
             );
     }
+
 }
 
 export default FlashCardView;

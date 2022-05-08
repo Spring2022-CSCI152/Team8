@@ -74,7 +74,7 @@ router.post('/deleteDeck', async (req, res) => {
     res.send(result);
 })
 
-app.post('/getShareCode', async (req, res) => {
+router.post('/getShareCode', async (req, res) => {
     const { email, deck } = req.body;
     var result;
 

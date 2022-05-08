@@ -52,7 +52,8 @@ router.post('/deleteDeck', async (req, res) => {
             result = {message: "Error: deck does not exist"};
         }
         else {
-            d = d.filter(Title => Title !== deckName);
+            d = d.filter(deck => deck.Title !== deckName);
+            console.log(d)
             const users = getUsers();
             const u = await users.findOne({email: email})
             await users.update({_id: u._id}, {$set:{"Decks" : d}})

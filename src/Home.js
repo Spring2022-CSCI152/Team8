@@ -49,7 +49,7 @@ const Home = props => {
 		const newList = list.filter(e => e.categoryText !== categoryText);
 		setList(newList);
 		axios.post(`${process.env.REACT_APP_BASE_URL}/deleteDeck`, { email: localStorage.getItem('email'), deck: categoryText }).then((response) => {
-			console.log(response.data)
+			
 		})
 	}
 	function handleView(deckName) {

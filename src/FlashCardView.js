@@ -19,7 +19,7 @@ const FlashCardView = props => {
     const [cardList, setCardList] = React.useState([]);
     
     const email = localStorage.getItem('email');
-    const deck = localStorage.getItem('title');
+    const deck = localStorage.getItem('deck');
     
     axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, {email: email, deck: deck}).then((response) => {
         setCardList(response.data.Deck.Cards);

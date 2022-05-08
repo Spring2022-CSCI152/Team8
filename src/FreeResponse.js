@@ -38,12 +38,13 @@ const FreeResponse = props => {
 	
     const [index, setIndex] = useState(0);
     const email = localStorage.getItem('email')
-    const deck = "Deck1"
+    const deck = localStorage.getItem('deck')
 
 
     const [cardList, setCardList] = React.useState([]);
     const [cardFront, setFront] = useState({});
     const [cardBack, setBack] = useState({});
+    const [possCorrect, setPossCorrect] = useState(0);
     const componentIsMounted = useRef(true);
 
     useEffect(() => {
@@ -62,6 +63,7 @@ const FreeResponse = props => {
                         setCardList(response.data.Deck.Cards);
                         setFront(response.data.Deck.Cards[index].Front)
                         setBack(response.data.Deck.Cards[index].Back)
+                        setPossCorrect(response.data.Deck.Cards.length)
                     }
                 }
             })
@@ -112,7 +114,7 @@ const FreeResponse = props => {
     //handles the events that happen when the Save button is clicked
     const handleCheckBtn = (e) => {
 
-        if (answer === cardList[index].back)
+        if (answer === cardList[index].Back)
         {
             setNumCorrect(numCorrect + 1);
         }
@@ -138,7 +140,7 @@ const FreeResponse = props => {
     };
 
     const [numCorrect, setNumCorrect] = useState(0);
-    const [possCorrect, setPossCorrect] = useState(cardList.length);
+    
 
     var number = (numCorrect/possCorrect)*100;
 
@@ -150,7 +152,7 @@ const FreeResponse = props => {
             score: number
         }
 
-        axios.post(`${process.env.REACT_APP_BASE_URL}/score/new?email=${email}&deck=${deck}&scoretype="fr"`, request)
+        axios.post(`${process.env.REACT_APP_BASE_URL}/score/new?email=${email}&deck=${deck}&scoretype=fr`, request)
     
 
     };

@@ -162,7 +162,7 @@ router.post('/score/new', async (req, res) => {
     } else {
         res.status(500).send("Failed to insert.")
     }
-    getClient().close()
+    //getClient().close()
 })
 
 export default router

@@ -14,8 +14,9 @@ const Home = props => {
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
+	const [share, setShare] = useState("")
 	const [list, setList] = React.useState([]);
-	//i dont understand lines 20-41 but they work ?
+
 	const componentIsMounted = useRef(true);
 
 	useEffect(() => {
@@ -48,11 +49,11 @@ const Home = props => {
 		const newList = list.filter(e => e.categoryText !== categoryText);
 		setList(newList);
 		axios.post(`${process.env.REACT_APP_BASE_URL}/deleteDeck`, { email: localStorage.getItem('email'), deck: categoryText }).then((response) => {
-			
+			console.log(response.data)
 		})
 	}
 	function handleView(deckName) {
-		localStorage.setItem("title", deckName);
+		localStorage.setItem('deck', deckName);
 	}
 	function handleGenerate(deckName) {
 		const request = {
@@ -109,10 +110,10 @@ const Home = props => {
 			  <br></br>
 			  <label> Enter Share link (Optional): </label>
 			  <br></br>
-			  <input type="text" className="textBox"></input>
+			  <input type="text" className="textBox" onChange={e => setShare(e.target.value)}></input>
 			  <br></br>
 			  <br></br>
-			  <button className="confirm" onClick={() => handleNew("testuser3@email.com", "deck2")}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>
+			  <button className="confirm" onClick={() => handleNew(deckTitle)}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>
 		  </div>
         </>}
         handleClose={togglePopup}
@@ -123,10 +124,10 @@ const Home = props => {
           <div className="options">
 			  <button className="option"><Link className="optionLink" to="/matching" state={{ title: catText }}>Study with Matching</Link></button>
 			  <button className="option"><Link className="optionLink" to="/freeResponse" state={{ title: catText }}>Study with Free Response</Link></button>
-			  <button className="option"><Link className="optionLink" to="/graph" state={{ title: catText }}>View Study Statistics</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/graph" state={{ title: catText }}>View Study Statistics</Link></button>
 					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>View Flashcards</Link></button>
 			  <button className="option"><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
-			  <button className="option" onClick={() => handleDelete(catText)}>Delete Flashcards</button>
+			  <button className="option" onClick={() => handleDelete(catText)}>Delete Deck</button>
 					<button className="option" onClick={() => handleGenerate(catText)} >Generate Share Link</button>
 		  </div>
         </>}

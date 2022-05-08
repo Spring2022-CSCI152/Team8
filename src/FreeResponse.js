@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
 import axios from "axios";
+import Navbar from "./navbar"
 
 /*
 const FlashCardList = 
@@ -33,8 +34,6 @@ const FreeResponse = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	//const location = useLocation()
-	//const { title } = location.state
 	
     const [index, setIndex] = useState(0);
     const email = localStorage.getItem('email')
@@ -156,7 +155,6 @@ const FreeResponse = props => {
     
 
     };
-			
 
      //where all the page style and structure is.
      if (cardList.length === 0) {

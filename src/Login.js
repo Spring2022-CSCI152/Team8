@@ -6,6 +6,7 @@ import axios from "axios";
 //This is a functional component. It holds all the functions
 //within it.
 const Login = props => {
+
 	props.funcNav(false);
 
 	//Handling the Card flip
@@ -120,6 +121,7 @@ const Login = props => {
 
 	//where all the page style and structure is.
 	return (
+	
 		//ReactCardFlip is the container that holds
 		//the containers of the 2 card faces.
 		<ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto" }}>

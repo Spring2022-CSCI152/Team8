@@ -5,7 +5,9 @@ const Popup = props => {
 	  <div className="popup-box">
 		<div className="box">
 		  <span id="close-icon" onClick={props.handleClose}>x</span>
-		  {props.content}
+		  <div data-testid="display">
+			{props.content}
+		  </div>
 		</div>
 	  </div>
 	);

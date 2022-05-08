@@ -1,4 +1,5 @@
 import "./Home.css";
+import Navbar from "./navbar"
 import {Link} from 'react-router-dom'
 import Popup from './Popup';
 import React, { useState, useEffect, useRef } from 'react';
@@ -15,6 +16,7 @@ const Home = props => {
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
 	const [share, setShare] = useState("")
+
 	const [list, setList] = React.useState([]);
 
 	const componentIsMounted = useRef(true);
@@ -38,12 +40,15 @@ const Home = props => {
 		}
 		getD();
 	}, []);
+
 	const togglePopup = () => {
 		setIsOpen(!isOpen);
 	}
 	const togglePopup1 = (categoryText) => {
 		setIsOpen1(!isOpen1);
 		setCatText(categoryText);
+		localStorage.setItem("title", JSON.stringify(categoryText));
+		console.log(localStorage.getItem("title"));
 	}
 	function handleDelete(categoryText){
 		const newList = list.filter(e => e.categoryText !== categoryText);
@@ -89,6 +94,7 @@ const Home = props => {
 		setList(newlist);
     }
 	return <div>
+	  <Navbar />
 	  <div className="flashCardSets" style = {{
 
 	  }}>

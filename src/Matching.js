@@ -10,6 +10,7 @@ const Matching = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
+
 	const email = localStorage.getItem('email')
 	const deck = localStorage.getItem('deck')
 
@@ -37,7 +38,6 @@ const Matching = props => {
 		}
 		getC();
 	}, []);
-
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [cardList, setCardList] = React.useState([]); //unmixed card list
@@ -74,6 +74,8 @@ const Matching = props => {
     }
 
 return (
+	<>
+	<Navbar />
 	 <div id="backgroundBox">
 	   <table className="table table-bordered">
         <thead>
@@ -114,6 +116,7 @@ return (
         	handleClose={togglePopup}
       		/>}
 	 </div>
+	 </>
     )
  
 }

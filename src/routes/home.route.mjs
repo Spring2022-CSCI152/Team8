@@ -8,21 +8,11 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     console.log("Homepage request recieved");
     
-    const { email, password } = req.body;
+    const { email } = req.body;
     var result;
 
-    //await setUpDB();
-    const users = await getUsers();
-    var user = await users.findOne({ email: email, password: password });
+    result = { Decks: await getDecks(email) };
 
-    if (user == null) { // if user cant be found in database
-        result = { message: "Error: user doesn't exist" };
-    }
-    else
-    {
-        result = { Decks: await getDecks(user) };
-    }
-    //getClient().close();
     res.send(result);
 })
 
@@ -78,7 +68,7 @@ router.post('/getShareCode', async (req, res) => {
     const { email, deck } = req.body;
     var result;
 
-    await setUpDB();
+    //await setUpDB();
     var d = await getDeck(email, deck);
 
     if (d == null) { // if user/deck cant be found in database
@@ -96,11 +86,11 @@ router.post('/getShareCode', async (req, res) => {
 })
 router.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
-    const {email, deck: deckName} = req.body;
+    const {email, deck: deckName, cards} = req.body;
     var result;
     //console.log(email)
 
-   await setUpDB();
+   //await setUpDB();
    var d = await getDecks(email)
 
    if(d == null) {
@@ -108,7 +98,12 @@ router.post('/newDeck', async (req,res) => {
    }
    else {
         if (d.find(({ Title }) => Title === deckName ) == null) {
-            d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
+            if(cards == null){
+                d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
+            }
+            esle {
+                d.push({Title: deckName, Cards: cards, FRScores: [], MScores: [] });
+            }
             const users = getUsers();
             const u = await users.findOne({email: email})
             await users.update({_id: u._id}, {$set:{"Decks" : d}})
@@ -152,7 +147,7 @@ router.post('/recieveShareCode', async (req, res) => {
 })
 
 router.post('/score/new', async (req, res) => {
-    await setUpDB()
+   // await setUpDB()
     let user = await getUsers().findOne({email: req.query.email})
     let deck = user.Decks.find(x => x.Title == req.query.deck)
     if (req.query.scoretype == "fr") {

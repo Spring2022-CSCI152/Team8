@@ -5,23 +5,11 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Matching from './Matching';
 
-const DeckList = [
-		{categoryText: "cat1"}, 
-		{categoryText: "cat2"}, 
-		{categoryText: "cat3"}, 
-		{categoryText: "cat4"},
-		{categoryText: "cat5"},
-		{categoryText: "cat6"},
-		{categoryText: "cat7"},
-		{categoryText: "cat8"},
-		{categoryText: "cat9"},
-		{categoryText: "cat10"},
-		{categoryText: "++"},
-		{categoryText: "+"},
-		{categoryText: "cat12"},
-		{categoryText: "cat13"},
-		{categoryText: "cat14"},
-		{categoryText: "cat15"}];
+async function getd() {
+	await axios.post(`${process.env.REACT_APP_BASE_URL}/`, { email: localStorage.getItem('email') }).then((response) => {
+		return response.data.Decks;
+	})
+}
 
 const Home = props => {
 	if(localStorage.getItem('email') === null){
@@ -32,8 +20,12 @@ const Home = props => {
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
-	const [list, setList] = React.useState(DeckList);
-	
+	const [list, setList] = React.useState([]);
+
+	getd().then((d) => {
+		if (d != null)
+			setList(d);
+    })
 	const togglePopup = () => {
 		setIsOpen(!isOpen);
 	}
@@ -42,32 +34,54 @@ const Home = props => {
 		setCatText(categoryText);
 	}
 	function handleDelete(categoryText){
-		const newList = DeckList.filter(e => e.categoryText !== categoryText);
+		const newList = list.filter(e => e.categoryText !== categoryText);
 		setList(newList);
+		axios.post(`${process.env.REACT_APP_BASE_URL}/deleteDeck`, { email: localStorage.getItem('email'), deck: categoryText }).then((response) => {
+			
+		})
 	}
-	function handleView(email, deckName) {
+	function handleView(deckName) {
+		localStorage.setItem("deck", JSON.stringify(deckName))
+		window.location = '/view';
+	}
+	function handleGenerate(deckName) {
 		const request = {
-			email: email,
+			email: localStorage.getItem('email'),
 			deck: deckName
 		}
-		axios.post("http://localhost:5565/viewCards", request).then((response) =>
-			console.log(response.data))
+		axios.post(`${process.env.REACT_APP_BASE_URL}/getShareCode`, request).then((response) => {
+			//do something with response.data.code
+		})
 	}
-	function handleGenerate(email, deckName) {
-		const request = {
-			email: email,
-			deck: deckName
+	function handleNew(deckName, code) { // deckName and code are optional (at least 1 required, both ok)
+		if (code != null) {
+			axios.post(`${process.env.REACT_APP_BASE_URL}/recieveShareCode`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
+				var request = {
+					email: localStorage.getItem('email'),
+					deckName: deckName,
+					cards: response.data.Deck.Cards
+				}
+				if (request.deckName == null) {
+					request.deckName = response.data.Deck.Title;
+				}
+				axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, request).then((response) => {
+					// gets updated decklist from database
+					getd().then((d) => {
+						if (d != null)
+							setList(d);
+					})
+				})
+			})
 		}
-		axios.post("http://localhost:5565/getShareCode", request).then((response) =>
-			console.log(response.data))
-	}
-	function handleNew(email, deckName) {
-		const request = {
-			email: email,
-			deck: deckName
+		else {
+			axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
+				// gets updated decklist from database
+				getd().then((d) => {
+					if (d != null)
+						setList(d);
+				})
+			})
 		}
-		axios.post("http://localhost:5565/newDeck", request).then((response) =>
-		console.log(response.data))
     }
 	return <div>
 	  <div className="flashCardSets" style = {{

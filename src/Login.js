@@ -104,7 +104,7 @@ const Login = props => {
 				if (user.password === "" && user.email === "") { document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password." }
 				else if (user.email === "") { document.getElementById("error").innerHTML = "Must provide email." }
 				else if (user.password === "") { document.getElementById("error").innerHTML = "Must provide password." }
-				console.log(res)
+				//console.log(res)
 			})
 			if (localStorage.getItem('email') !== null) {
 				window.location = '/';

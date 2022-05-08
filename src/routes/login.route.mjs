@@ -4,7 +4,7 @@ import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs
 const app = express.Router();
 
 app.post('/login', async (req, res) => {
-    console.log("login request recieved");
+   // console.log("login request recieved");
     var result;
     const { email, password } = req.body;
     //await setUpDB();
@@ -23,7 +23,7 @@ app.post('/login', async (req, res) => {
 })
 
 app.post('/registration', async (req, res) => {
-    console.log("registration request recieved");
+    //console.log("registration request recieved");
     var result;
     const { email, password } = req.body;
     //await setUpDB();

@@ -19,6 +19,7 @@ function getDB() {
     return db;
 }
 async function getDecks(email) {
+//console.log(email)
    const u = await users.findOne({email: email});
     if (u == null)
     {

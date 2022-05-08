@@ -11,6 +11,7 @@ const Matching = props => {
 	}
 	const location = useLocation()
 	const { title } = location.state
+	/*
 	const FlashCard = [
 		{
 			categoryText: "cat1",
@@ -27,7 +28,18 @@ const Matching = props => {
 			cardFront: "this",
 			cardBack: "that",
 		}, 
-	];
+	];*/
+
+	var FlashCard;
+	const request = {
+		email: localStorage.getItem('email'),
+		deck: localStorage.getItem('deck')
+	};
+	axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, request).then((response) => {
+		FlashCard = response.data.Cards;
+	})
+
+
 	const [isOpen, setIsOpen] = useState(false);
 	const mixed = arrayShuffle(FlashCard);
 	const [percent, setPercent] = useState(0);

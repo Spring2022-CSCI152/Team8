@@ -37,19 +37,19 @@ const FreeResponse = props => {
 	const { title } = location.state
 	
     const [index, setIndex] = useState(0);
-    const email = "test"
-    const deck = "test"
-    var FlashCardList;
-    const request = {
-    email: email
-    ,deckName: deck
-    };
+    const email = localStorage.getItem('email')
+    const deck = localStorage.getItem('deck')
 
-    axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        FlashCardList = response.data
-    })
 
     const [cardList, setCardList] = React.useState(FlashCardList);
+
+    const request = {
+        email: email
+        , deckName: deck
+    };
+    axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, request).then((response) => {
+        setCardList(response.data.Cards)
+    })
 
     const [cardFront,setFront] = useState(cardList[index].front);
     const [cardBack,setBack] = useState(cardList[index].back);
@@ -134,9 +134,7 @@ const FreeResponse = props => {
             score: number
         }
 
-        axios.post(`http://localhost:5565/score/new?email=${email}&deck=${deck}&scoretype="fr"`, request).then((response) => {
-
-        })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/score/new?email=${email}&deck=${deck}&scoretype="fr"`, request)
     
 
     };

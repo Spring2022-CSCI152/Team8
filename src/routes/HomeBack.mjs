@@ -14,7 +14,7 @@ app.post('/', async (req, res) => {
     const { email, password } = req.body;
     var result;
 
-    await setUpDB();
+    //await setUpDB();
     const users = await getUsers();
     var user = await users.findOne({ email: email, password: password });
 
@@ -25,16 +25,15 @@ app.post('/', async (req, res) => {
     {
         result = { Decks: await getDecks(user) };
     }
-    getClient().close();
+    //getClient().close();
     res.send(result);
 })
 
 app.post('/viewCards', async (req, res) => {
-    console.log("CardView request recieved");
+    //console.log("CardView request recieved");
     const { email, deck } = req.body;
     var result;
-
-    await setUpDB();
+    //await setUpDB();
     var d = await getDeck(email, deck);
 
     if (d == null) { // if user/deck cant be found in database
@@ -44,7 +43,36 @@ app.post('/viewCards', async (req, res) => {
     else {
         result = { Deck: d };
     }
-    getClient().close();
+    //getClient().close();
+    //console.log(result)
+    res.send(result);
+})
+
+app.post('/deleteDeck', async (req, res) => {
+    console.log("Delete deck request recieved");
+    const {email, deck: deckName} = req.body;
+    var result;
+    //console.log(email)
+
+   //await setUpDB();
+   var d = await getDecks(email)
+
+   if(d == null) {
+        result = {message: "Error: user does not exist" };
+   }
+   else {
+        if (d.find(({ Title }) => Title === deckName ) == null) {
+            result = {message: "Error: deck does not exist"};
+        }
+        else {
+            d = d.filter(Title => Title !== deckName);
+            const users = getUsers();
+            const u = await users.findOne({email: email})
+            await users.update({_id: u._id}, {$set:{"Decks" : d}})
+            result = {message: "Deck deletion successful"}
+        }
+    }
+    //getClient().close();
     //console.log(result)
     res.send(result);
 })
@@ -65,7 +93,7 @@ app.post('/getShareCode', async (req, res) => {
         result = { code: code };
     }
 
-    getClient().close();
+    //getClient().close();
     //console.log(result)
     res.send(result);
 })
@@ -73,20 +101,19 @@ app.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
-    console.log(deckName)
+    //console.log(email)
 
    await setUpDB();
    var d = await getDecks(email)
 
    if(d == null) {
         result = {message: "Error: user does not exist" };
-   }con
+   }
    else {
-        if(d.find(({ Title }) => Title === deckName ) == null) {
+        if (d.find(({ Title }) => Title === deckName ) == null) {
             d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
             const users = getUsers();
             const u = await users.findOne({email: email})
-            console.log(d)
             await users.update({_id: u._id}, {$set:{"Decks" : d}})
             result = {message: "Deck creation successful"}
         }
@@ -94,28 +121,36 @@ app.post('/newDeck', async (req,res) => {
             result = {message: "Error: deck already exists" }
         }
    }
-   getClient().close();
+   //getClient().close();
     //console.log(result)
     res.send(result);
 });
 app.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
-    const { code } = req.body;
-    const [ email, deckName ] = code.split("_");
     var result;
-    
-    await setUpDB();
-    var d = await getDeck(email, deckName);
-
-    if (d == null) { // if user/deck cant be found in database
+    const { code } = req.body;
+    if (code == null)
+    {
         result = { message: "Error: code isn't valid" };
     }
     else
     {
-        result = { Deck: d };
+        const [ email, deckName ] = code.split("_");
+    
+    
+        //await setUpDB();
+        var d = await getDeck(email, deckName);
+
+        if (d == null) { // if user/deck cant be found in database
+            result = { message: "Error: code isn't valid" };
+        }
+        else
+        {
+            result = { Deck: d };
+        }
+       // getClient().close();
+        //console.log(result)
     }
-    getClient().close();
-    //console.log(result)
     res.send(result);
 })
 

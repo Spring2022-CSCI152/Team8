@@ -13,7 +13,6 @@ async function setUpDB() {
     db = client.db("myFirstDatabase")
     cards = db.collection("Cards")
     users = db.collection("Users")
-    
 }
 
 function getDB() {

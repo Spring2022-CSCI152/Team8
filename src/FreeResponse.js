@@ -4,8 +4,9 @@ import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
 import axios from "axios";
 
-
-const FlashCardList = [
+/*
+const FlashCardList = 
+[
     {
         front: "front0",
         back: "back0"
@@ -24,7 +25,7 @@ const FlashCardList = [
         front: "front3",
         back: "back3"
     }
-]
+]*/
 
 //This is a functional component. It holds all the functions
 //within it.
@@ -36,6 +37,17 @@ const FreeResponse = props => {
 	const { title } = location.state
 	
     const [index, setIndex] = useState(0);
+    const email = "test"
+    const deck = "test"
+    var FlashCardList;
+    const request = {
+    email: email
+    ,deckName: deck
+    };
+
+    axios.post("http://localhost:5565/viewCards", request).then((response) => {
+        FlashCardList = response.data
+    })
 
     const [cardList, setCardList] = React.useState(FlashCardList);
 
@@ -84,7 +96,6 @@ const FreeResponse = props => {
     //handles the events that happen when the Save button is clicked
     const handleCheckBtn = (e) => {
 
-
         if (answer === cardList[index].back)
         {
             setNumCorrect(numCorrect + 1);
@@ -97,7 +108,6 @@ const FreeResponse = props => {
             document.getElementById("score-card-box").style.display='block';
             document.getElementById("b-Text").style.display='block';
             setIsFlipped(!isFlipped);
-
         }
 
         else{
@@ -114,15 +124,19 @@ const FreeResponse = props => {
     const [numCorrect, setNumCorrect] = useState(0);
     const [possCorrect, setPossCorrect] = useState(cardList.length);
 
-    const [isOpen, setIsOpen] = useState(false); /***need this***/
-    const [percent, setPercent] = useState(0); /***need this***/
-
     var number = (numCorrect/possCorrect)*100;
 
 
     //handles when user clicks saveScore button
     const handleSaveScoreBtn = () => {
 
+        const request = {
+            score: number
+        }
+
+        axios.post(`http://localhost:5565/score/new?email=${email}&deck=${deck}&scoretype="fr"`, request).then((response) => {
+
+        })
     
 
     };
@@ -134,7 +148,7 @@ const FreeResponse = props => {
         <header>
             <div className="container">
                 <div className="nav">
-                    <h10>Free Response</h10>
+                    <h9>Free Response</h9>
                     <div>
                         <h20>Score: {numCorrect}/{possCorrect}</h20>
                     </div>
@@ -208,11 +222,12 @@ const FreeResponse = props => {
 
         <div class="answerContainer">
             <div className="cardBoxAnswer" id="answer-card-box" data-testid="answer-card-box">
-                <h20>Answer:</h20>
+                <h8>Answer:</h8>
                 <div className="textAreas">
                     <textarea 
                         className="answer" 
                         id="answer-text" 
+                        data-testid="answer-text"
                         style={{textAlign:"center"}}
                         placeholder="Enter answer here" 
                         value={answer}
@@ -220,7 +235,7 @@ const FreeResponse = props => {
                     </textarea>
                 </div>
                 <div className="cardAnswerBtn">
-                    <button className="checkAnswer" id="checkBtn" onClick={handleCheckBtn}>Check Answer</button>
+                    <button className="checkAnswer" id="checkBtn" role="check" onClick={handleCheckBtn}>Check Answer</button>
                     <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
                     <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
                 </div>
@@ -229,15 +244,14 @@ const FreeResponse = props => {
 
         <div class="scoreContainer">
             <div className="cardBoxScore" id="score-card-box" data-testid="score-card-box">
-                <h20>Score:</h20>
+                <h8>Score:</h8>
                 <div className="scorePercentage">{number}%</div>
                 <div className="cardScoreBtn">
-                    <button role="saveScore" id="nextBtn" onClick={handleSaveScoreBtn}>Save Score</button>
+                    <button role="saveScore" id="saveBtn" onClick={handleSaveScoreBtn}>Save Score</button>
                 </div>
             </div>
         </div>   
 
-    
     </>
     );
 }

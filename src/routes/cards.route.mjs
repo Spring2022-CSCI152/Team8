@@ -59,6 +59,7 @@ router.post('/card/update', async (req, res) => {
     }
 })
 router.post('/card/new', async (req, res) => {
+    console.log(req.query.email)
     let user = await getUsers().findOne({email: req.query.email})
     let deck = await getDeck(req.query.email, req.query.deck)
     if (deck == null) {

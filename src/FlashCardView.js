@@ -5,29 +5,10 @@ import axios from "axios";
 import "./FlashCardView.css"
 import Navbar from "./navbar"
 
-const FlashCardList = [
-    {
-        front: "front0",
-        back: "back0"
-    },
-
-    {
-        front: "front1",
-        back: "back1"
-    },
-
-    {
-        front: "front2",
-        back: "back2"
-    },
-    {
-        front: "front3",
-        back: "back3"
-    }
-]
 
 //This is a functional component. It holds all the functions
 //within it.
+
 const FlashCardView = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
@@ -36,8 +17,16 @@ const FlashCardView = props => {
 	console.log(title);
 	
     const [index, setIndex] = useState(0);
+    const [cardList, setCardList] = React.useState([]);
+    
+    const email = "testuser3@email.com";
+    const deck = "Deck1";
+    
+    axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, {email: email, deck: deck}).then((response) => {
+        setCardList(response.data.Deck.Cards);
+    })
 
-    const [cardList, setCardList] = React.useState(FlashCardList);
+    
 
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -86,6 +75,7 @@ const FlashCardView = props => {
         newCardList.splice(index,1);
         setCardList(newCardList);
 
+        axios.delete(`${process.env.REACT_APP_BASE_URL}/card/delete?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, {})
         handlePrevBtn();
         
     };
@@ -111,11 +101,10 @@ const FlashCardView = props => {
     const handleSaveBtn = (e) => {
         let newCard = {};
 
-        newCard.front = frontAdd;
-        newCard.back = backAdd;
-
+        newCard.Front = frontAdd;
+        newCard.Back = backAdd;
         cardList.push(newCard);
-
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/new?email=${encodeURIComponent(email)}&deck=${deck}`, { Front: frontAdd, Back: backAdd })
         setFrontAdd('');
         setBackAdd('');
     };
@@ -155,6 +144,8 @@ const FlashCardView = props => {
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
 
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/update?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, { Front: frontEdit, Back: backEdit }).then((response) => { })
+
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');
       setBackEdit('');
@@ -174,10 +165,10 @@ const FlashCardView = props => {
         <>
         <header>
         <div className="container">
-            <div className="nav">
-                <h10>Flash Cards</h10>
+            <div className="nav1">
+                <h9>Flash Cards</h9>
                 <div>
-                    <button className="addBtn" onClick={handleAddBtn}>Add Card</button>
+                    <button role="addBtn" onClick={handleAddBtn}>Add Card</button>
                     <button role="edit" onClick={handleEditBtn} >Edit</button>
                     <button role="delete" onClick={handleDeleteBtn}>Delete</button>
                 </div>
@@ -186,12 +177,12 @@ const FlashCardView = props => {
     </header> 
 
     <div className="emptyContainer">
-        <div class="cardBoxEmpty">Deck empty add cards</div>
+        <div className="cardBoxEmpty">Deck empty add cards</div>
     </div>
 
-    <div class="addContainer">
+    <div className="addContainer">
         <div className="cardBox" id="add-card-box" data-testid="add-card-box">
-            <h20>New Flash Card</h20>
+            <h8>New Flash Card</h8>
             <div className="textAreas">
                 <textarea 
                     className="frontAdd" 
@@ -226,10 +217,10 @@ const FlashCardView = props => {
                     <Navbar />
 					<header>
                     <div className="container">
-                        <div className="nav">
-                            <h10>Flash Cards</h10>
+                        <div className="nav1">
+                            <h9>Flash Cards</h9>
                             <div>
-                                <button className="addBtn" onClick={handleAddBtn}>Add Card</button>
+                                <button role="addBtn" onClick={handleAddBtn}>Add Card</button>
                                 <button role="edit" onClick={handleEditBtn}>Edit</button>
                                 <button role="delete" onClick={handleDeleteBtn}>Delete</button>
                             </div>
@@ -237,9 +228,9 @@ const FlashCardView = props => {
                     </div>
                 </header>
         
-                <div class="addContainer">
+                <div className="addContainer">
                     <div className="cardBox" id="add-card-box">
-                        <h20>New Flash Card</h20>
+                        <h8>New Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontAdd" 
@@ -265,9 +256,9 @@ const FlashCardView = props => {
                     </div>
                 </div>
         
-                <div class="editContainer">
+                <div className="editContainer">
                     <div className="cardBox" id="edit-card-box" display="none">
-                        <h20>Edit Flash Card</h20>
+                        <h8>Edit Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontEdit" 
@@ -322,9 +313,9 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="f-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Front Text"
-                                value={cardList[index].front} />
+                                value={cardList[index].Front} />
                                 <br />
                         </form>
                   
@@ -352,14 +343,14 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="b-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Back Text"
-                                value={cardList[index].back} /><br />
+                                value={cardList[index].Back} /><br />
                         </form>
         
                     </div>
                 </ReactCardFlip>
-                        <div className="cardNavBtn" style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="cardNavBtn">
                             <button role="prev" onClick={handlePrevBtn}>Previous</button>
                             <button role="flip" onClick={handleClick}>Flip</button>
                             <button role="next" onClick={handleNextBtn}>Next</button>
@@ -367,6 +358,7 @@ const FlashCardView = props => {
                 </>
             );
     }
+
 }
 
 export default FlashCardView;

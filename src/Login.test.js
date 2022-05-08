@@ -1,4 +1,4 @@
-import { render, fireEvent ,screen, getByPlaceholderText, getAllByTestId, getAllByAltText, getByText, getByRole, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login, {handleEmail,handleLoginBtn} from "./Login";
 
@@ -16,7 +16,7 @@ describe("Login", ()=>{
         const {getByRole} = render(<Login handleClick={mockFn} />);
         const buttonNode = getByRole("signUpLink");
         fireEvent.click(buttonNode);
-        expect(screen.findByText("Login")).toBeTruthy();
+        expect(screen.findByText("Login")).toBeDefined();
     });
 
     test("testing when clicking Signup button", ()=>{
@@ -78,5 +78,63 @@ describe("Login", ()=>{
         fireEvent.change(cPasswordNode, {target: {value: "TestPassword"}});
         expect(cPasswordNode.value).toMatch("TestPassword");
     });
+
+
+    test("test when user clicks signup with blank fields should produce error", () =>{
+        const testEmail = '';
+        const testPass = '';
+
+        const component = render(<Login/>);
+
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
+        fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testPass}});
+        fireEvent.click(screen.getByRole("signUpBtn"));
+
+        expect(screen.findByText("There's an error with the forms")).toBeDefined();
+    });
+
+    test("test when user clicks signup with  password and confirm password should produce error", () =>{
+        const testEmail = 'test@mail.com';
+        const testPass = 'test1234';
+        const testCPass = 'test123';
+    
+        const component = render(<Login/>);
+
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
+        fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testCPass}});
+        fireEvent.click(screen.getByRole("signUpBtn"));
+
+        expect(screen.findByText("There's an error with the forms")).toBeDefined();
+    });
+
+    test("test when user clicks signup correct info", () =>{
+        const testEmail = 'test@mail.com';
+        const testPass = 'test1234';
+        const testCPass = 'test123;';
+    
+        const component = render(<Login/>);
+
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
+        fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testCPass}});
+        fireEvent.click(screen.getByRole("signUpBtn"));
+
+    });
+
+    test("test when user clicks login with blank fields should produce error", () =>{
+        const testEmail = '';
+        const testPass = '';
+
+        const component = render(<Login/>);
+
+        fireEvent.change(screen.getByTestId("L-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("L-password"), {target: {value: testPass}});
+        fireEvent.click(screen.getByRole("loginBtn"));
+
+        expect(screen.findByText("There's an error with the forms")).toBeDefined();
+    });
+
 
 });

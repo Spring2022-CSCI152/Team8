@@ -1,17 +1,13 @@
-import cors from "cors"
 import express from "express"
 import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 
 const app = express.Router();
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
 
 app.post('/login', async (req, res) => {
     console.log("login request recieved");
     var result;
     const { email, password } = req.body;
-    await setUpDB();
+    //await setUpDB();
     const users = getUsers();
     const user = await users.findOne({ email: email, password: password });
     if (user != null) { // if user can be found in database
@@ -21,7 +17,7 @@ app.post('/login', async (req, res) => {
         result = {message: "incorrect email or password"};
     }
 
-    getClient().close();
+    //getClient().close();
     console.log(result);
     res.send(result);
 })
@@ -30,17 +26,18 @@ app.post('/registration', async (req, res) => {
     console.log("registration request recieved");
     var result;
     const { email, password } = req.body;
-    await setUpDB();
+    //await setUpDB();
     const users = getUsers();
     if (await users.findOne({ email: email }) != null) { //if there already exists a user with the given email
         result = {message: "user already exists"};
     }
     else {
-        const user = { email: email, password: password, Decks: {} };
+        const user = { email: email, password: password, Decks: [] };
+        //console.log(user)
         await users.insertOne(user); //add user to database
         result = { message: "registration successful", user: user}
     }
-    getClient().close();
+   // getClient().close();
     res.send(result);
 })
 

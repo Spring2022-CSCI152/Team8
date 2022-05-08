@@ -128,12 +128,12 @@ const Home = props => {
         content={<>
           <h1><i>{catText}</i></h1>
           <div className="options">
-			  <button className="option"><Link className="optionLink" to="/matching" state={{ title: catText }}>Study with Matching</Link></button>
-			  <button className="option"><Link className="optionLink" to="/freeResponse" state={{ title: catText }}>Study with Free Response</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/matching" state={{ title: catText }}>Study with Matching</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/freeResponse" state={{ title: catText }}>Study with Free Response</Link></button>
 					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/graph" state={{ title: catText }}>View Study Statistics</Link></button>
 					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>View Flashcards</Link></button>
-			  <button className="option"><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
-			  <button className="option" onClick={() => handleDelete(catText)}>Delete Deck</button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
+			        <button className="option" onClick={() => handleDelete(catText)}>Delete Deck</button>
 					<button className="option" onClick={() => handleGenerate(catText)} >Generate Share Link</button>
 		  </div>
         </>}

@@ -65,6 +65,7 @@ const Matching = props => {
 			var number = (result.length/mixed.length)*100;
 			setPercent(number.toFixed(2)); 
 		}
+		axios.post(`${process.env.REACT_APP_BASE_URL}/score/new?email=${localStorage.getItem('email')}&deck=${localStorage.getItem('deck')}&scoretype="fr"`, request)
 
 		setIsOpen(!isOpen);
 	}

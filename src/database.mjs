@@ -20,7 +20,7 @@ function getDB() {
 }
 async function getDecks(email) {
 //console.log(email)
-   const u = await users.findOne({email: email});
+    const u = await users.findOne({"email": email});
     if (u == null)
     {
         console.log("user does not exist")

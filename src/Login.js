@@ -95,7 +95,7 @@ const Login = props => {
 				if (response.data.message === "login successful") {
 					setSubmitted(true);
 					setError(false);
-					localStorage.setItem("email", JSON.stringify(email))
+					localStorage.setItem("email", email)
 				}
 				else {
 					setError(true);

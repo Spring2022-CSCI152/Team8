@@ -6,7 +6,7 @@ import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    console.log("Homepage request recieved");
+   // console.log("Homepage request recieved");
     
     const { email } = req.body;
     var result;
@@ -85,7 +85,7 @@ router.post('/getShareCode', async (req, res) => {
     res.send(result);
 })
 router.post('/newDeck', async (req,res) => {
-    console.log("New deck request recieved");
+    //console.log("New deck request recieved");
     const {email, deck: deckName, cards} = req.body;
     var result;
     //console.log(email)
@@ -101,13 +101,13 @@ router.post('/newDeck', async (req,res) => {
             if(cards == null){
                 d.push({Title: deckName, Cards: [], FRScores: [], MScores: [] });
             }
-            esle {
+            else {
                 d.push({Title: deckName, Cards: cards, FRScores: [], MScores: [] });
             }
             const users = getUsers();
             const u = await users.findOne({email: email})
             await users.update({_id: u._id}, {$set:{"Decks" : d}})
-            result = {message: "Deck creation successful"}
+            result = {message: "Deck creation successful", deck: d}
         }
         else {
             result = {message: "Error: deck already exists" }

@@ -1,31 +1,44 @@
 import "./Home.css";
 import {Link} from 'react-router-dom'
 import Popup from './Popup';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useAsync } from "react-async"
 import axios from "axios";
 import Matching from './Matching';
 
-async function getd() {
-	await axios.post(`${process.env.REACT_APP_BASE_URL}/`, { email: localStorage.getItem('email') }).then((response) => {
-		return response.data.Decks;
-	})
-}
-
 const Home = props => {
-	if(localStorage.getItem('email') === null){
+	if (localStorage.getItem('email') === null) {
 		window.location = '/Login';
 	}
-	
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
 	const [list, setList] = React.useState([]);
+	//i dont understand lines 20-41 but they work ?
+	const componentIsMounted = useRef(true);
 
-	getd().then((d) => {
-		if (d != null)
-			setList(d);
-    })
+	useEffect(() => {
+		// each useEffect can return a cleanup function
+		return () => {
+			componentIsMounted.current = false;
+		};
+	}, []); // no extra deps => the cleanup function run this on component unmount
+
+	useEffect(() => {
+		async function getD() {
+		await axios.post(`${process.env.REACT_APP_BASE_URL}/`, { email: localStorage.getItem('email') }).then((response) => {
+			console.log(response.data)
+			if (response.data.Decks != null) {
+				if (componentIsMounted.current) {
+					setList(response.data.Decks);
+				}
+			}
+		})
+		}
+		getD();
+	}, []);
 	const togglePopup = () => {
 		setIsOpen(!isOpen);
 	}
@@ -41,7 +54,7 @@ const Home = props => {
 		})
 	}
 	function handleView(deckName) {
-		localStorage.setItem("deck", JSON.stringify(deckName))
+		localStorage.setItem("deck", deckName)
 		window.location = '/view';
 	}
 	function handleGenerate(deckName) {
@@ -54,6 +67,7 @@ const Home = props => {
 		})
 	}
 	function handleNew(deckName, code) { // deckName and code are optional (at least 1 required, both ok)
+		var newlist = list;
 		if (code != null) {
 			axios.post(`${process.env.REACT_APP_BASE_URL}/recieveShareCode`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
 				var request = {
@@ -65,30 +79,23 @@ const Home = props => {
 					request.deckName = response.data.Deck.Title;
 				}
 				axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, request).then((response) => {
-					// gets updated decklist from database
-					getd().then((d) => {
-						if (d != null)
-							setList(d);
-					})
+					newlist.push(response.data.deck);
 				})
 			})
 		}
 		else {
 			axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
-				// gets updated decklist from database
-				getd().then((d) => {
-					if (d != null)
-						setList(d);
-				})
+				newlist.push(response.data.deck);
 			})
 		}
+		setList(newlist);
     }
 	return <div>
 	  <div className="flashCardSets" style = {{
 
 	  }}>
-		  {list.map(({categoryText}) => (
-			<button key={categoryText} className="Cardz" onClick={() => togglePopup1(categoryText)}><b>{categoryText}</b></button>
+		  {list.map(({Title}) => (
+			<button key={Title} className="Cardz" onClick={() => togglePopup1(Title)}><b>{Title}</b></button>
 			
 			))}
 			
@@ -120,10 +127,10 @@ const Home = props => {
 			  <button className="option"><Link className="optionLink" to="/matching" state={{ title: catText }}>Study with Matching</Link></button>
 			  <button className="option"><Link className="optionLink" to="/freeResponse" state={{ title: catText }}>Study with Free Response</Link></button>
 			  <button className="option"><Link className="optionLink" to="/graph" state={{ title: catText }}>View Study Statistics</Link></button>
-			  <button className="option" onClick={() => handleView("testuser@email.com", "deck1")}><Link className="optionLink" to="/view" state={{ title: catText }}>View Flashcards</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>View Flashcards</Link></button>
 			  <button className="option"><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
 			  <button className="option" onClick={() => handleDelete(catText)}>Delete Flashcards</button>
-			  <button className="option" onClick={() => handleGenerate("testuser@email.com", "deck1")} >Generate Share Link</button>
+					<button className="option" onClick={() => handleGenerate(catText)} >Generate Share Link</button>
 		  </div>
         </>}
         handleClose={togglePopup1}

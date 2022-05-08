@@ -18,7 +18,7 @@ app.post('/login', async (req, res) => {
     }
 
     //getClient().close();
-    console.log(result);
+    //console.log(result);
     res.send(result);
 })
 

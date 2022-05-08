@@ -41,7 +41,7 @@ const FreeResponse = props => {
     const deck = localStorage.getItem('deck')
 
 
-    const [cardList, setCardList] = React.useState(FlashCardList);
+    const [cardList, setCardList] = React.useState([]);
 
     const request = {
         email: email

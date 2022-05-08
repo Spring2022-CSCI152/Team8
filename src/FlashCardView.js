@@ -6,31 +6,19 @@ import "./FlashCardView.css"
 
 //This is a functional component. It holds all the functions
 //within it.
+
 const FlashCardView = props => {
     const [index, setIndex] = useState(0);
-
-    const FlashCardList = [
-        {
-            front: "front0",
-            back: "back0"
-        },
+    const [cardList, setCardList] = React.useState([]);
     
-        {
-            front: "front1",
-            back: "back1"
-        },
+    const email = "testuser3@email.com";
+    const deck = "Deck1";
     
-        {
-            front: "front2",
-            back: "back2"
-        },
-        {
-            front: "front3",
-            back: "back3"
-        }
-    ]
+    axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, {email: email, deck: deck}).then((response) => {
+        setCardList(response.data.Deck.Cards);
+    })
 
-    const [cardList, setCardList] = React.useState(FlashCardList);
+    
 
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -79,6 +67,7 @@ const FlashCardView = props => {
         newCardList.splice(index,1);
         setCardList(newCardList);
 
+        axios.delete(`${process.env.REACT_APP_BASE_URL}/card/delete?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, {})
         handlePrevBtn();
         
     };
@@ -104,11 +93,10 @@ const FlashCardView = props => {
     const handleSaveBtn = (e) => {
         let newCard = {};
 
-        newCard.front = frontAdd;
-        newCard.back = backAdd;
-
+        newCard.Front = frontAdd;
+        newCard.Back = backAdd;
         cardList.push(newCard);
-
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/new?email=${encodeURIComponent(email)}&deck=${deck}`, { Front: frontAdd, Back: backAdd })
         setFrontAdd('');
         setBackAdd('');
     };
@@ -148,6 +136,8 @@ const FlashCardView = props => {
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
 
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/update?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, { Front: frontEdit, Back: backEdit }).then((response) => { })
+
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');
       setBackEdit('');
@@ -182,7 +172,7 @@ const FlashCardView = props => {
         <div className="cardBoxEmpty">Deck empty add cards</div>
     </div>
 
-    <div class="addContainer">
+    <div className="addContainer">
         <div className="cardBox" id="add-card-box" data-testid="add-card-box">
             <h8>New Flash Card</h8>
             <div className="textAreas">
@@ -229,9 +219,9 @@ const FlashCardView = props => {
                     </div>
                 </header>
         
-                <div class="addContainer">
+                <div className="addContainer">
                     <div className="cardBox" id="add-card-box">
-                        <h20>New Flash Card</h20>
+                        <h8>New Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontAdd" 
@@ -257,9 +247,9 @@ const FlashCardView = props => {
                     </div>
                 </div>
         
-                <div class="editContainer">
+                <div className="editContainer">
                     <div className="cardBox" id="edit-card-box" display="none">
-                        <h20>Edit Flash Card</h20>
+                        <h8>Edit Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontEdit" 
@@ -314,9 +304,9 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="f-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Front Text"
-                                value={cardList[index].front} />
+                                value={cardList[index].Front} />
                                 <br />
                         </form>
                   
@@ -344,9 +334,9 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="b-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Back Text"
-                                value={cardList[index].back} /><br />
+                                value={cardList[index].Back} /><br />
                         </form>
         
                     </div>
@@ -359,6 +349,7 @@ const FlashCardView = props => {
                 </>
             );
     }
+
 }
 
 export default FlashCardView;

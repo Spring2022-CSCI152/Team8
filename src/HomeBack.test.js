@@ -4,18 +4,34 @@ import {
     screen
 } from '@testing-library/react'
 import axios from 'axios'
-//import pkg from '../Team8/database.mjs';
-//const { setUpDB, getCards, getUsers, getClient } = pkg;
+//import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 import {
     type
 } from '@testing-library/user-event'
 axios.defaults.adapter = require('axios/lib/adapters/http');
 
+beforeAll(async () => {
+    const registered = {
+        email: "hometest@email.com",
+        password: "password"
+    }
+    await axios.post("http://localhost:5565/registration", registered).then((response) => {
+    })
+
+    const request = {
+        email: registered.email,
+        deck: "testDeck"
+    }
+    await axios.post("http://localhost:5565/newDeck", request).then((response) => {
+        //console.log(response.data)
+    })
+});
+
 test.skip('/ViewCards request should return correct deck', async () => {
 
     const request = {
-        email: "testuser@email.com",
-        deck: "deck1"
+        email: "hometest@email.com",
+        deck: "testDeck"
     }
     await setUpDB();
     const expectedDeck = await getDeck(request.email);
@@ -31,8 +47,8 @@ test.skip('/ViewCards request should return correct deck', async () => {
 
 test('/generateShareCode and /recieveShareCode should be inverse operations', async () => {
     const request1 = {
-        email: "testuser@email.com",
-        deck: "deck1"
+        email: "hometest@email.com",
+        deck: "testDeck"
     }
     var code;
 
@@ -52,11 +68,11 @@ test('/generateShareCode and /recieveShareCode should be inverse operations', as
 
 test('/veiwCards should return deck', async () => {
     const request = {
-        email: "testuser@email.com",
-        deck: "deck1"
+        email: "hometest@email.com",
+        deck: "testDeck"
     }
     await axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        console.log(response.data)
+        //console.log(response.data)
         expect(response.data.Deck.Cards).toBeTruthy();
         expect(response.data.Deck.Title).toEqual(request.deck);
     })

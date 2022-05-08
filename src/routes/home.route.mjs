@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/viewCards', async (req, res) => {
-    console.log("CardView request recieved");
+    //console.log("CardView request recieved");
     const { email, deck } = req.body;
     var result;
     //await setUpDB();
@@ -74,7 +74,7 @@ router.post('/deleteDeck', async (req, res) => {
     res.send(result);
 })
 
-app.post('/getShareCode', async (req, res) => {
+router.post('/getShareCode', async (req, res) => {
     const { email, deck } = req.body;
     var result;
 

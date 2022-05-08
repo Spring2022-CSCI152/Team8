@@ -2,40 +2,45 @@ import "./Home.css";
 import Navbar from "./navbar"
 import {Link} from 'react-router-dom'
 import Popup from './Popup';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
 import Matching from './Matching';
 
-const DeckList = [
-		{categoryText: "cat1"}, 
-		{categoryText: "cat2"}, 
-		{categoryText: "cat3"}, 
-		{categoryText: "cat4"},
-		{categoryText: "cat5"},
-		{categoryText: "cat6"},
-		{categoryText: "cat7"},
-		{categoryText: "cat8"},
-		{categoryText: "cat9"},
-		{categoryText: "cat10"},
-		{categoryText: "++"},
-		{categoryText: "+"},
-		{categoryText: "cat12"},
-		{categoryText: "cat13"},
-		{categoryText: "cat14"},
-		{categoryText: "cat15"}];
-
 const Home = props => {
-	if(localStorage.getItem('email') === null){
+	if (localStorage.getItem('email') === null) {
 		window.location = '/Login';
 	}
-	
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
 	const [share, setShare] = useState("")
-	const [list, setList] = React.useState(DeckList);
-	
+
+	const [list, setList] = React.useState([]);
+
+	const componentIsMounted = useRef(true);
+
+	useEffect(() => {
+		return () => {
+			componentIsMounted.current = false;
+		};
+	}, []); 
+
+	useEffect(() => {
+		async function getD() {
+		await axios.post(`${process.env.REACT_APP_BASE_URL}/`, { email: localStorage.getItem('email') }).then((response) => {
+			//console.log(response.data)
+			if (response.data.Decks != null) {
+				if (componentIsMounted.current) {
+					setList(response.data.Decks);
+				}
+			}
+		})
+		}
+		getD();
+	}, []);
+
 	const togglePopup = () => {
 		setIsOpen(!isOpen);
 	}
@@ -46,40 +51,55 @@ const Home = props => {
 		console.log(localStorage.getItem("title"));
 	}
 	function handleDelete(categoryText){
-		const newList = DeckList.filter(e => e.categoryText !== categoryText);
+		const newList = list.filter(e => e.categoryText !== categoryText);
 		setList(newList);
+		axios.post(`${process.env.REACT_APP_BASE_URL}/deleteDeck`, { email: localStorage.getItem('email'), deck: categoryText }).then((response) => {
+			
+		})
 	}
-	function handleView(email, deckName) {
+	function handleView(deckName) {
+		localStorage.setItem('deck', deckName);
+	}
+	function handleGenerate(deckName) {
 		const request = {
-			email: email,
+			email: localStorage.getItem('email'),
 			deck: deckName
 		}
-		axios.post("http://localhost:5565/viewCards", request).then((response) =>
-			console.log(response.data))
+		axios.post(`${process.env.REACT_APP_BASE_URL}/getShareCode`, request).then((response) => {
+			//do something with response.data.code
+		})
 	}
-	function handleGenerate(email, deckName) {
-		const request = {
-			email: email,
-			deck: deckName
+	function handleNew(deckName, code) { // deckName and code are optional (at least 1 required, both ok)
+		var newlist = list;
+		if (code != null) {
+			axios.post(`${process.env.REACT_APP_BASE_URL}/recieveShareCode`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
+				var request = {
+					email: localStorage.getItem('email'),
+					deckName: deckName,
+					cards: response.data.Deck.Cards
+				}
+				if (request.deckName == null) {
+					request.deckName = response.data.Deck.Title;
+				}
+				axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, request).then((response) => {
+					newlist.push(response.data.deck);
+				})
+			})
 		}
-		axios.post("http://localhost:5565/getShareCode", request).then((response) =>
-			console.log(response.data))
-	}
-	function handleNew(email, deckName) {
-		const request = {
-			email: email,
-			deck: deckName
+		else {
+			axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
+				newlist.push(response.data.deck);
+			})
 		}
-		axios.post("http://localhost:5565/newDeck", request).then((response) =>
-		console.log(response.data))
+		setList(newlist);
     }
 	return <div>
 	  <Navbar />
 	  <div className="flashCardSets" style = {{
 
 	  }}>
-		  {list.map(({categoryText}) => (
-			<button key={categoryText} className="Cardz" onClick={() => togglePopup1(categoryText)}><b>{categoryText}</b></button>
+		  {list.map(({Title}) => (
+			<button key={Title} className="Cardz" onClick={() => togglePopup1(Title)}><b>{Title}</b></button>
 			
 			))}
 			
@@ -99,7 +119,7 @@ const Home = props => {
 			  <input type="text" className="textBox" onChange={e => setShare(e.target.value)}></input>
 			  <br></br>
 			  <br></br>
-			  <button className="confirm" onClick={() => handleNew("testuser3@email.com", "deck2")}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>
+			  <button className="confirm" onClick={() => handleNew(deckTitle)}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>
 		  </div>
         </>}
         handleClose={togglePopup}
@@ -108,13 +128,13 @@ const Home = props => {
         content={<>
           <h1><i>{catText}</i></h1>
           <div className="options">
-			  <button className="option"><Link className="optionLink" to="/matching">Study with Matching</Link></button>
-			  <button className="option"><Link className="optionLink" to="/freeResponse">Study with Free Response</Link></button>
-			  <button className="option"><Link className="optionLink" to="/graph">View Study Statistics</Link></button>
-			  <button className="option" onClick={() => handleView("testuser@email.com", "deck1")}><Link className="optionLink" to="/view">View Flashcards</Link></button>
-			  <button className="option"><Link className="optionLink" to="/view">Edit Flashcards</Link></button>
-			  <button className="option" onClick={() => handleDelete(catText)}>Delete Flashcards</button>
-			  <button className="option" onClick={() => handleGenerate("testuser@email.com", "deck1")} >Generate Share Link</button>
+			  <button className="option"><Link className="optionLink" to="/matching" state={{ title: catText }}>Study with Matching</Link></button>
+			  <button className="option"><Link className="optionLink" to="/freeResponse" state={{ title: catText }}>Study with Free Response</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/graph" state={{ title: catText }}>View Study Statistics</Link></button>
+					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>View Flashcards</Link></button>
+			  <button className="option"><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
+			  <button className="option" onClick={() => handleDelete(catText)}>Delete Deck</button>
+					<button className="option" onClick={() => handleGenerate(catText)} >Generate Share Link</button>
 		  </div>
         </>}
         handleClose={togglePopup1}

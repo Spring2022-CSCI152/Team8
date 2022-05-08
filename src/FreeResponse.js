@@ -1,5 +1,5 @@
-import React, {useState} from "react";
 import { useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
 import axios from "axios";
@@ -34,26 +34,43 @@ const FreeResponse = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	const title = localStorage.getItem('title');
-	console.log(title);
 	
     const [index, setIndex] = useState(0);
-    const email = "test"
-    const deck = "test"
-    var FlashCardList;
-    const request = {
-    email: email
-    ,deckName: deck
-    };
+    const email = localStorage.getItem('email')
+    const deck = localStorage.getItem('deck')
 
-    axios.post("http://localhost:5565/viewCards", request).then((response) => {
-        FlashCardList = response.data
-    })
 
-    const [cardList, setCardList] = React.useState(FlashCardList);
+    const [cardList, setCardList] = React.useState([]);
+    const [cardFront, setFront] = useState({});
+    const [cardBack, setBack] = useState({});
+    const [possCorrect, setPossCorrect] = useState(0);
+    const componentIsMounted = useRef(true);
 
-    const [cardFront,setFront] = useState(cardList[index].front);
-    const [cardBack,setBack] = useState(cardList[index].back);
+    useEffect(() => {
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        async function getC() {
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, { email: email, deck: deck }).then((response) => {
+                //console.log(response.data)
+                if (response.data.Deck != null) {
+                    if (componentIsMounted.current) {
+                       // console.log(response.data.Deck.Cards)
+                        setCardList(response.data.Deck.Cards);
+                        setFront(response.data.Deck.Cards[index].Front)
+                        setBack(response.data.Deck.Cards[index].Back)
+                        setPossCorrect(response.data.Deck.Cards.length)
+                    }
+                }
+            })
+        }
+        getC();
+    }, []);
+    
+    
 
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -64,7 +81,6 @@ const FreeResponse = props => {
 
     //handles when user clicks next button
     const handleNextBtn = () => {
-
         document.getElementById("b-Text").style.display='none';
         setIsFlipped(false);
 
@@ -97,7 +113,7 @@ const FreeResponse = props => {
     //handles the events that happen when the Save button is clicked
     const handleCheckBtn = (e) => {
 
-        if (answer === cardList[index].back)
+        if (answer === cardList[index].Back)
         {
             setNumCorrect(numCorrect + 1);
         }
@@ -123,7 +139,7 @@ const FreeResponse = props => {
     };
 
     const [numCorrect, setNumCorrect] = useState(0);
-    const [possCorrect, setPossCorrect] = useState(cardList.length);
+    
 
     var number = (numCorrect/possCorrect)*100;
 
@@ -135,127 +151,140 @@ const FreeResponse = props => {
             score: number
         }
 
-        axios.post(`http://localhost:5565/score/new?email=${email}&deck=${deck}&scoretype="fr"`, request).then((response) => {
-
-        })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/score/new?email=${email}&deck=${deck}&scoretype=fr`, request)
     
 
     };
-		
-		
 
-    return (
-    <>
-		<Navbar />
-	   <header>
-            <div className="container">
-                <div className="nav">
-                    <h9>Free Response</h9>
-                    <div>
-                        <h20>Score: {numCorrect}/{possCorrect}</h20>
+     //where all the page style and structure is.
+     if (cardList.length === 0) {
+        return (
+      
+    
+        <div className="emptyContainer">
+            <div className="cardBoxEmpty">Deck empty add cards</div>
+        </div>
+    
+    
+       );
+        }
+    
+        else {
+            return (
+             
+     <>
+            <header>
+                <div className="container">
+                    <div className="nav">
+                        <h9>Free Response</h9>
+                        <div>
+                            <h20>Score: {numCorrect}/{possCorrect}</h20>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
-        
-        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto"}}>
+            </header>
             
-                <div style={{
-                    backgroundColor: "#EEEEEE",
-                    height: 500,
-                    width: 500,
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    maxWidth: 1080, margin: 0, margin: "auto",
-                }}
-                >
+            <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedFrontToBack="1.5" flipSpeedBackToFront="1.5" containerStyle={{ maxWidth: 1080, margin: 0, margin: "auto"}}>
+                
+                    <div style={{
+                        backgroundColor: "#EEEEEE",
+                        height: 500,
+                        width: 500,
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        maxWidth: 1080, margin: 0, margin: "auto",
+                    }}
+                    >
+                        
+                        <form>
+                            <div className="cardInfo">
+                                <div>Front</div>
+                                <div>{index + 1 }/{cardList.length}</div>
+                            </div>
                     
-                    <form>
+                            <input
+                                type="text"
+                                className="cardInput"
+                                style={{ fontSize: 18, alignContent: "center" }}
+                                id="f-Text"
+                                readOnly="true"
+                                placeholder="Front Text"
+                                value={cardList[index].Front} 
+                            />
+                                <br />
+                        </form>
+                    
+                    </div>
+                    <div style={{
+                        backgroundColor: "#EEEEEE",
+                        height: 500,
+                        width: 500,
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        maxWidth: 1080, margin: 0, margin: "auto",
+                    }}
+                    >
+        
+                        <form>
                         <div className="cardInfo">
-                            <div>Front</div>
-                            <div>{index + 1 }/{cardList.length}</div>
-                        </div>
-                
-                        <input
-                            type="text"
-                            className="cardInput"
-                            style={{ fontSize: 18, alignContent: "center" }}
-                            id="f-Text"
-                            readOnly="true"
-                            placeholder="Front Text"
-                            value={cardList[index].front} />
-                            <br />
-                    </form>
-                
-                </div>
-                <div style={{
-                    backgroundColor: "#EEEEEE",
-                    height: 500,
-                    width: 500,
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    maxWidth: 1080, margin: 0, margin: "auto",
-                }}
-                >
+                                <div>Back</div>
+                                <div>{index + 1 }/{cardList.length}</div>
+                            </div>
+                    
+                            <input
+                                type="text"
+                                className="cardInput"
+                                style={{ fontSize: 18, alignContent: "center" }}
+                                id="b-Text"
+                                readOnly="true"
+                                placeholder="Back Text"
+                                value={cardList[index].Back}
+                            /><br />
+                        </form>
+        
+                    </div>
+            </ReactCardFlip>
     
-                    <form>
-                    <div className="cardInfo">
-                            <div>Back</div>
-                            <div>{index + 1 }/{cardList.length}</div>
-                        </div>
-                
-                        <input
-                            type="text"
-                            className="cardInput"
-                            style={{ fontSize: 18, alignContent: "center" }}
-                            id="b-Text"
-                            readOnly="true"
-                            placeholder="Back Text"
-                            value={cardList[index].back} /><br />
-                    </form>
     
+            <div class="answerContainer">
+                <div className="cardBoxAnswer" id="answer-card-box" data-testid="answer-card-box">
+                    <h8>Answer:</h8>
+                    <div className="textAreas">
+                        <textarea 
+                            className="answer" 
+                            id="answer-text" 
+                            data-testid="answer-text"
+                            style={{textAlign:"center"}}
+                            placeholder="Enter answer here" 
+                            value={answer}
+                            onChange={handleAnswer}>
+                        </textarea>
+                    </div>
+                    <div className="cardAnswerBtn">
+                        <button className="checkAnswer" id="checkBtn" role="check" onClick={handleCheckBtn}>Check Answer</button>
+                        <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
+                        <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
+                    </div>
                 </div>
-        </ReactCardFlip>
-
-
-        <div class="answerContainer">
-            <div className="cardBoxAnswer" id="answer-card-box" data-testid="answer-card-box">
-                <h8>Answer:</h8>
-                <div className="textAreas">
-                    <textarea 
-                        className="answer" 
-                        id="answer-text" 
-                        data-testid="answer-text"
-                        style={{textAlign:"center"}}
-                        placeholder="Enter answer here" 
-                        value={answer}
-                        onChange={handleAnswer}>
-                    </textarea>
+            </div>       
+    
+            <div class="scoreContainer">
+                <div className="cardBoxScore" id="score-card-box" data-testid="score-card-box">
+                    <h8>Score:</h8>
+                    <div className="scorePercentage">{number}%</div>
+                    <div className="cardScoreBtn">
+                        <button role="saveScore" id="saveBtn" onClick={handleSaveScoreBtn}>Save Score</button>
+                    </div>
                 </div>
-                <div className="cardAnswerBtn">
-                    <button className="checkAnswer" id="checkBtn" role="check" onClick={handleCheckBtn}>Check Answer</button>
-                    <button role="flip" id="flipBtn" style={{display:"none"}} onClick={handleClick}>Flip</button>
-                    <button role="next" id="nextBtn" style={{display:"none"}} onClick={handleNextBtn}>Next</button>
-                </div>
-            </div>
-        </div>       
-
-        <div class="scoreContainer">
-            <div className="cardBoxScore" id="score-card-box" data-testid="score-card-box">
-                <h8>Score:</h8>
-                <div className="scorePercentage">{number}%</div>
-                <div className="cardScoreBtn">
-                    <button role="saveScore" id="saveBtn" onClick={handleSaveScoreBtn}>Save Score</button>
-                </div>
-            </div>
-        </div>   
-
-    </>
+            </div>   
+    
+        </>
     );
+}
 }
 
 

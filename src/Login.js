@@ -6,11 +6,9 @@ import axios from "axios";
 //This is a functional component. It holds all the functions
 //within it.
 const Login = props => {
-	const userList = [
-		{email: "cat1", password: "dog"}, 
-		{email: "cat2", password: "bird"}, 
-		{email: "cat3", password: "horse"}, 
-	];
+
+	props.funcNav(false);
+
 	//Handling the Card flip
 	const [isFlipped, setIsFlipped] = useState(false);
 	const handleClick = () => {
@@ -51,7 +49,6 @@ const Login = props => {
 	//handles the events that happen when the signup button is clicked
 	const handleSignupbtn = (e) => {
 		e.preventDefault();
-
 		//if the fields are left blank or the password fields
 		//don't match, it sets the error to true.
 		if (email === '' || password === '' || password !== confirmPass) {
@@ -65,18 +62,20 @@ const Login = props => {
 		//is sent to server
 		else {
 			setSubmitted(true);
-			setError(false);
+			
 			setIsFlipped(!isFlipped);
 			const registered = {
 				email: email,
 				password: password
 			}
-			{/*axios.post("http://localhost:5565/registration", registered).then((response) => {
-				console.log(response.data)
-				window.location = '/login';
-			}).catch((res) => {
-				this.setState({...this.state, error: res.response.data.password}, console.log(this.state))
-			})*/}
+			axios.post(`${process.env.REACT_APP_BASE_URL}/registration`, registered).then((response) => {
+				if (response.data.message == "registration successful") {
+					setError(false);
+				}
+				else {
+					setError(true);
+                }
+			})
 		}
 	};
 
@@ -84,38 +83,26 @@ const Login = props => {
 	const handleLoginbtn = (e) => {
 		e.preventDefault();
 		
-		const em = userList.filter(user => user.email === email);
-		const p = userList.filter(user => user.password === password);
-		
-		console.log(em.length + " " + p.length);
-		
 		//if the fields are left blank it sets the error to true.
 		if (email === '' || password === '') {
 			setError(true);
-		}		
-		else if ((em.length === 0) && (p.length === 0)){
-			setError(true);
 		}
 		else {
-			setSubmitted(true);
-			setError(false);
-			localStorage.setItem("email", JSON.stringify(email));
-				{/*axios.post("http://localhost:5565/login", user).then((response) => {
-							console.log(response.data.message)
-							//setUser(response.data);
-							if (response.data.message === "login successful") {
-								localStorage.setItem("user", JSON.stringify(response.data._doc))
-								localStorage.setItem("email", JSON.stringify(response.data._doc.email))
-								//setAuthState(true)
-							};
-						})
-						.catch((res) => {
-							if (user.password === "" && user.email === ""){document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password."}
-							else if (user.email === ""){document.getElementById("error").innerHTML = "Must provide email."}
-							else if (user.password === ""){document.getElementById("error").innerHTML = "Must provide password."}
-							//else{document.getElementById("error").innerHTML = "The email or password is incorrect. Please try again."}
-							console.log(res)
-				})*/}
+			axios.post(`${process.env.REACT_APP_BASE_URL}/login`, { email: email, password: password }).then((response) => {
+				if (response.data.message === "login successful") {
+					setSubmitted(true);
+					setError(false);
+					localStorage.setItem("email", email)
+				}
+				else {
+					setError(true);
+				}
+			}).catch((res) => {
+				if (user.password === "" && user.email === "") { document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password." }
+				else if (user.email === "") { document.getElementById("error").innerHTML = "Must provide email." }
+				else if (user.password === "") { document.getElementById("error").innerHTML = "Must provide password." }
+				//console.log(res)
+			})
 			if (localStorage.getItem('email') !== null) {
 				window.location = '/';
 			}

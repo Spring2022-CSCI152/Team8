@@ -81,7 +81,7 @@ test('tests button switch graphs', () => {
   
   const { getByRole } = render(
 	  <Graph />
-  );
+  )
 
   // Find an element with a role of button & text of 'Change to blue'
   const colorButton = screen.getByRole('button', { name: 'Matching' })

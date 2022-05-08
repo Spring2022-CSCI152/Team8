@@ -29,7 +29,7 @@ test('popup displays score', () => {
         	</>
   } />)
   expect(screen.getByTestId('display')).toHaveTextContent('ScoreView Incorrect AnswersBack to home page')
-})
+});
 
 test('popup displays create new flashcard set', () => {
   const {rerender} = render(<Popup content={

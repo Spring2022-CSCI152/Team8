@@ -21,7 +21,7 @@ test('Match line graph renders', () => {
         disconnect: jest.fn(),
         observe: jest.fn(),
         unobserve: jest.fn(),
-    }));
+    }))
 	const { getByTestId } = render(<LineChart2 />);
 	expect(screen.getByTestId("chart")).toBeInTheDocument()
 });

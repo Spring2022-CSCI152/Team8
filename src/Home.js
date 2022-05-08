@@ -33,6 +33,7 @@ const Home = props => {
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
+	const [share, setShare] = useState("")
 	const [list, setList] = React.useState(DeckList);
 	
 	const togglePopup = () => {
@@ -95,7 +96,7 @@ const Home = props => {
 			  <br></br>
 			  <label> Enter Share link (Optional): </label>
 			  <br></br>
-			  <input type="text" className="textBox"></input>
+			  <input type="text" className="textBox" onChange={e => setShare(e.target.value)}></input>
 			  <br></br>
 			  <br></br>
 			  <button className="confirm" onClick={() => handleNew("testuser3@email.com", "deck2")}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>

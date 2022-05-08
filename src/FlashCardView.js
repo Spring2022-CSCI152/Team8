@@ -163,6 +163,7 @@ const FlashCardView = props => {
     if (cardList.length === 0) {
     return (
         <>
+		<Navbar />
         <header>
         <div className="container">
             <div className="nav1">

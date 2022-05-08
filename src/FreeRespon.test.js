@@ -23,7 +23,7 @@ test('Free response line graph renders', () => {
         disconnect: jest.fn(),
         observe: jest.fn(),
         unobserve: jest.fn(),
-    }));
+    }))
 	const { getByTestId } = render(<LineChart1 />);
 	expect(screen.getByTestId("chart")).toBeInTheDocument()
 });

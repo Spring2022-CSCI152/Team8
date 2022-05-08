@@ -56,4 +56,4 @@ test('click home should set title to null', () => {
 	fireEvent.click(link);
 	
 	expect(localStorage.getItem('title') === null).toBeTruthy();
-});
+})

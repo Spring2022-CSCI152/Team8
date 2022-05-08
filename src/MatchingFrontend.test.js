@@ -10,4 +10,4 @@ afterEach(() => {
   unmountComponentAtNode(container);
   container.remove();
   container = null;
-});
+})

@@ -3,14 +3,16 @@ import { useLocation } from 'react-router-dom'
 import LineChart from "./Match.js";
 import LineChart1 from "./FreeRespon.js";
 import "./Graph.css";
+import ResizeObserver from "use-resize-observer";
+import Navbar from "./navbar"
 
 const Graph = () => {
+	
+	const title = localStorage.getItem('title');
 	
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	const location = useLocation()
-	const { title } = location.state
 	
 	const [style, setStyle] = useState("cont2");
 	const [style1, setStyle1] = useState("cont1");
@@ -29,16 +31,19 @@ const Graph = () => {
 	};
 	
     return (
+	<>
+	<Navbar />
 	<div id="graph">
-      <div id="chart">
+      <div id="chart" role="display">
 	  {chart}
       </div>
-	  <div id="type">
+	  <div id="type" data-testid="type">
 		<h1> Study Type </h1>
 		<button className={style} id="graphButton" onClick={changeStyle}> Matching </button><br></br>
 		<button className={style1} id="graphButton" onClick={changeStyle1}> Free Response </button>
 	  </div>
 	  </div>
+	  </>
     );   
 }
 

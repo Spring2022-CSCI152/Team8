@@ -7,10 +7,14 @@ const Navbar = () =>{
   const handleLogOut = () => {
 	  localStorage.removeItem('email');
   }
+  
+  const handleHome = () => {
+	  localStorage.removeItem('title');
+  }
   return (
     <nav className="navbar">
 		<div className="links">
-		<a href="/" data-testid="homelink"><FaHome size={50}/></a>
+		<a href="/" data-testid="homelink" onClick = {handleHome}><FaHome size={50}/></a>
 		<a href="/Login" onClick = {handleLogOut}><b>Log out</b></a>
 		</div>
 	</nav>

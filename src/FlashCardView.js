@@ -3,6 +3,7 @@ import ReactCardFlip from 'react-card-flip';
 import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import "./FlashCardView.css"
+import Navbar from "./navbar"
 
 const FlashCardList = [
     {
@@ -31,8 +32,8 @@ const FlashCardView = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	const location = useLocation()
-	const { title } = location.state
+	const title = localStorage.getItem('title');
+	console.log(title);
 	
     const [index, setIndex] = useState(0);
 
@@ -222,7 +223,8 @@ const FlashCardView = props => {
     else {
         return (
             <>
-                    <header>
+                    <Navbar />
+					<header>
                     <div className="container">
                         <div className="nav">
                             <h10>Flash Cards</h10>

@@ -44,6 +44,7 @@ export default class LineChart extends Component {
 				<canvas
 				id="myChart"
 				ref={this.chartRef}
+				data-testid = "chart"
 				/>
 			)
 	}

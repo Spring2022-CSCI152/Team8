@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js/auto';
+import ref from "use-resize-observer";
 
 export default class LineChart extends Component {
 
@@ -44,7 +45,8 @@ export default class LineChart extends Component {
 				<canvas
 				id="myChart"
 				ref={this.chartRef}
-				/>
+				data-testid = "chart"
+				></canvas>
 			)
 	}
 }

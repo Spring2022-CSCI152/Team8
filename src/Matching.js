@@ -1,16 +1,16 @@
 import {useState} from 'react';
-import { useLocation } from 'react-router-dom'
 import Popup from './Popup';
 import arrayShuffle from 'array-shuffle';
 import './Matching.css'
+import Navbar from "./navbar"
 
 const Matching = props => {
 	
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	const location = useLocation()
-	const { title } = location.state
+	const title = localStorage.getItem('title');
+	console.log(title);
 	const FlashCard = [
 		{
 			categoryText: "cat1",
@@ -58,6 +58,8 @@ const Matching = props => {
 	}
 
 return (
+	<>
+	<Navbar />
 	 <div id="backgroundBox">
 	   <table className="table table-bordered">
         <thead>
@@ -97,6 +99,7 @@ return (
         	handleClose={togglePopup}
       		/>}
 	 </div>
+	 </>
     )
  
 }

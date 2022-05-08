@@ -19,11 +19,10 @@ const Home = props => {
 	const componentIsMounted = useRef(true);
 
 	useEffect(() => {
-		// each useEffect can return a cleanup function
 		return () => {
 			componentIsMounted.current = false;
 		};
-	}, []); // no extra deps => the cleanup function run this on component unmount
+	}, []); 
 
 	useEffect(() => {
 		async function getD() {
@@ -53,6 +52,7 @@ const Home = props => {
 		})
 	}
 	function handleView(deckName) {
+		localStorage.setItem("title", deckName);
 	}
 	function handleGenerate(deckName) {
 		const request = {

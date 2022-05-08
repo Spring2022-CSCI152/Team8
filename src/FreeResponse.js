@@ -1,5 +1,5 @@
-import React, {useState} from "react";
 import { useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import "./FlashCardView.css"
 import axios from "axios";
@@ -33,26 +33,43 @@ const FreeResponse = props => {
 	if(localStorage.getItem('email') === null){
 		window.location = '/Login';
 	}
-	const location = useLocation()
-	const { title } = location.state
+	//const location = useLocation()
+	//const { title } = location.state
 	
     const [index, setIndex] = useState(0);
     const email = localStorage.getItem('email')
-    const deck = title
+    const deck = "Deck1"
 
 
     const [cardList, setCardList] = React.useState([]);
+    const [cardFront, setFront] = useState({});
+    const [cardBack, setBack] = useState({});
+    const componentIsMounted = useRef(true);
 
-    const request = {
-        email: email
-        , deckName: deck
-    };
-    axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, request).then((response) => {
-        setCardList(response.data.Cards)
-    })
+    useEffect(() => {
+        return () => {
+            componentIsMounted.current = false;
+        };
+    }, []);
 
-    const [cardFront,setFront] = useState(cardList[index].front);
-    const [cardBack,setBack] = useState(cardList[index].back);
+    useEffect(() => {
+        async function getC() {
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, { email: email, deck: deck }).then((response) => {
+                //console.log(response.data)
+                if (response.data.Deck != null) {
+                    if (componentIsMounted.current) {
+                       // console.log(response.data.Deck.Cards)
+                        setCardList(response.data.Deck.Cards);
+                        setFront(response.data.Deck.Cards[index].Front)
+                        setBack(response.data.Deck.Cards[index].Back)
+                    }
+                }
+            })
+        }
+        getC();
+    }, []);
+    
+    
 
     //Handling the Card flip
     const [isFlipped, setIsFlipped] = useState(false);
@@ -63,7 +80,6 @@ const FreeResponse = props => {
 
     //handles when user clicks next button
     const handleNextBtn = () => {
-
         document.getElementById("b-Text").style.display='none';
         setIsFlipped(false);
 
@@ -181,7 +197,8 @@ const FreeResponse = props => {
                             id="f-Text"
                             readOnly="true"
                             placeholder="Front Text"
-                            value={cardList[index].front} />
+                            value={cardList[index].Front} 
+                        />
                             <br />
                     </form>
                 
@@ -211,7 +228,8 @@ const FreeResponse = props => {
                             id="b-Text"
                             readOnly="true"
                             placeholder="Back Text"
-                            value={cardList[index].back} /><br />
+                            value={cardList[index].Back}
+                        /><br />
                     </form>
     
                 </div>

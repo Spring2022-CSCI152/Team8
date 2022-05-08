@@ -66,7 +66,8 @@ const FlashCardView = props => {
         let newCardList = cardList;
         newCardList.splice(index,1);
         setCardList(newCardList);
-        axios.post('http://localhost:5565/card/delete?email=${email}&deck=${deckName}&index=${index}', {}).then((response) => {})
+
+        axios.post(`http://localhost:5565/card/delete?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, {}).then((response) => { })
         handlePrevBtn();
         
     };
@@ -92,10 +93,10 @@ const FlashCardView = props => {
     const handleSaveBtn = (e) => {
         let newCard = {};
 
-        newCard.front = frontAdd;
-        newCard.back = backAdd;
+        newCard.Front = frontAdd;
+        newCard.Back = backAdd;
         cardList.push(newCard);
-        axios.post('http://localhost:5565/card/new?email=${email}&deck=${deckName}', { newCard })
+        axios.post(`http://localhost:5565/card/new?email=${encodeURIComponent(email)}&deck=${deck}`, {newCard})
         setFrontAdd('');
         setBackAdd('');
     };
@@ -135,7 +136,7 @@ const FlashCardView = props => {
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
 
-       axios.post('http://localhost:5565/card/update?email=${email}&deck=${deckName}&index=${index}', { cardEdited }).then((response) => { })
+        axios.post('http://localhost:5565/card/update?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}', { cardEdited }).then((response) => { })
 
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');
@@ -171,7 +172,7 @@ const FlashCardView = props => {
         <div className="cardBoxEmpty">Deck empty add cards</div>
     </div>
 
-    <div class="addContainer">
+    <div className="addContainer">
         <div className="cardBox" id="add-card-box" data-testid="add-card-box">
             <h8>New Flash Card</h8>
             <div className="textAreas">
@@ -218,9 +219,9 @@ const FlashCardView = props => {
                     </div>
                 </header>
         
-                <div class="addContainer">
+                <div className="addContainer">
                     <div className="cardBox" id="add-card-box">
-                        <h20>New Flash Card</h20>
+                        <h8>New Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontAdd" 
@@ -246,9 +247,9 @@ const FlashCardView = props => {
                     </div>
                 </div>
         
-                <div class="editContainer">
+                <div className="editContainer">
                     <div className="cardBox" id="edit-card-box" display="none">
-                        <h20>Edit Flash Card</h20>
+                        <h8>Edit Flash Card</h8>
                         <div className="textAreas">
                             <textarea 
                                 className="frontEdit" 
@@ -303,7 +304,7 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="f-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Front Text"
                                 value={cardList[index].Front} />
                                 <br />
@@ -333,7 +334,7 @@ const FlashCardView = props => {
                                 className="cardInput"
                                 style={{ fontSize: 18, alignContent: "center" }}
                                 id="b-Text"
-                                readOnly="true"
+                                readOnly={true}
                                 placeholder="Back Text"
                                 value={cardList[index].Back} /><br />
                         </form>

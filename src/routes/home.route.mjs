@@ -3,12 +3,9 @@ import express from "express"
 import { setUpDB, getDeck, getUsers, getDecks, getClient } from '../database.mjs';
 
 
-const app = express.Router();
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
+const router = express.Router();
 
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     console.log("Homepage request recieved");
     
     const { email, password } = req.body;
@@ -29,8 +26,8 @@ app.post('/', async (req, res) => {
     res.send(result);
 })
 
-app.post('/viewCards', async (req, res) => {
-    //console.log("CardView request recieved");
+router.post('/viewCards', async (req, res) => {
+    console.log("CardView request recieved");
     const { email, deck } = req.body;
     var result;
     //await setUpDB();
@@ -48,7 +45,7 @@ app.post('/viewCards', async (req, res) => {
     res.send(result);
 })
 
-app.post('/deleteDeck', async (req, res) => {
+router.post('/deleteDeck', async (req, res) => {
     console.log("Delete deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
@@ -97,7 +94,7 @@ app.post('/getShareCode', async (req, res) => {
     //console.log(result)
     res.send(result);
 })
-app.post('/newDeck', async (req,res) => {
+router.post('/newDeck', async (req,res) => {
     console.log("New deck request recieved");
     const {email, deck: deckName} = req.body;
     var result;
@@ -125,7 +122,7 @@ app.post('/newDeck', async (req,res) => {
     //console.log(result)
     res.send(result);
 });
-app.post('/recieveShareCode', async (req, res) => {
+router.post('/recieveShareCode', async (req, res) => {
     console.log("Share Code request recieved");
     var result;
     const { code } = req.body;
@@ -154,4 +151,23 @@ app.post('/recieveShareCode', async (req, res) => {
     res.send(result);
 })
 
-export default app
+router.post('/score/new', async (req, res) => {
+    await setUpDB()
+    let user = await getUsers().findOne({email: req.query.email})
+    let deck = user.Decks.find(x => x.Title == req.query.deck)
+    if (req.query.scoretype == "fr") {
+        deck.FRScores.push(req.body.score)
+    } else if (req.query.scoretype == "m") {
+        deck.MScores.push(req.body.score)
+    }
+    user.Decks[user.Decks.findIndex(x => x.Title == req.query.deck)] = deck
+    const result = await getUsers().replaceOne({email: req.query.email}, user)
+    if (result.modifiedCount > 0) {
+        res.status(200).send("Success.")
+    } else {
+        res.status(500).send("Failed to insert.")
+    }
+    getClient().close()
+})
+
+export default router

@@ -7,8 +7,6 @@ import axios from "axios";
 //within it.
 const Login = props => {
 
-	props.funcNav(false);
-
 	//Handling the Card flip
 	const [isFlipped, setIsFlipped] = useState(false);
 	const handleClick = () => {

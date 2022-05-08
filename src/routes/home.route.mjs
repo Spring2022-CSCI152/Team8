@@ -53,7 +53,7 @@ router.post('/deleteDeck', async (req, res) => {
         }
         else {
             d = d.filter(deck => deck.Title !== deckName);
-            console.log(d)
+           // console.log(d)
             const users = getUsers();
             const u = await users.findOne({email: email})
             await users.update({_id: u._id}, {$set:{"Decks" : d}})

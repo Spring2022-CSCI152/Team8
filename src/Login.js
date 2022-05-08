@@ -7,11 +7,7 @@ import axios from "axios";
 //within it.
 const Login = props => {
 	props.funcNav(false);
-	const userList = [
-		{email: "cat1", password: "dog"}, 
-		{email: "cat2", password: "bird"}, 
-		{email: "cat3", password: "horse"}, 
-	];
+
 	//Handling the Card flip
 	const [isFlipped, setIsFlipped] = useState(false);
 	const handleClick = () => {

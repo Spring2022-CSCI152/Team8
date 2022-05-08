@@ -14,7 +14,7 @@ const FlashCardView = props => {
     const email = "testuser3@email.com";
     const deck = "Deck1";
     
-    axios.post("http://localhost:5565/viewCards", {email: email, deck: deck}).then((response) => {
+    axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, {email: email, deck: deck}).then((response) => {
         setCardList(response.data.Deck.Cards);
     })
 
@@ -67,7 +67,7 @@ const FlashCardView = props => {
         newCardList.splice(index,1);
         setCardList(newCardList);
 
-        axios.post(`http://localhost:5565/card/delete?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, {}).then((response) => { })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/delete?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, {}).then((response) => { })
         handlePrevBtn();
         
     };
@@ -96,7 +96,7 @@ const FlashCardView = props => {
         newCard.Front = frontAdd;
         newCard.Back = backAdd;
         cardList.push(newCard);
-        axios.post(`http://localhost:5565/card/new?email=${encodeURIComponent(email)}&deck=${deck}`, {newCard})
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/new?email=${encodeURIComponent(email)}&deck=${deck}`, { Front: frontAdd, Back: backAdd })
         setFrontAdd('');
         setBackAdd('');
     };
@@ -136,7 +136,7 @@ const FlashCardView = props => {
       newCardList.splice(index,1,cardEdited);
       setCardList(newCardList);
 
-        axios.post('http://localhost:5565/card/update?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}', { cardEdited }).then((response) => { })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/card/update?email=${encodeURIComponent(email)}&deck=${deck}&index=${index}`, { cardEdited }).then((response) => { })
 
       document.getElementById("edit-card-box").style.display='none';
       setFrontEdit('');

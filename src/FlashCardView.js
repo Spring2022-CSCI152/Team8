@@ -13,13 +13,13 @@ const FlashCardView = props => {
 		window.location = '/Login';
 	}
 	const location = useLocation()
-	const { title } = location.state
+	const { title } = props.state
 	
     const [index, setIndex] = useState(0);
     const [cardList, setCardList] = React.useState([]);
     
-    const email = "testuser3@email.com";
-    const deck = "Deck1";
+    const email = localStorage.getItem('email');
+    const deck = title;
     
     axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, {email: email, deck: deck}).then((response) => {
         setCardList(response.data.Deck.Cards);

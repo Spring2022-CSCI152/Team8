@@ -38,7 +38,7 @@ const FreeResponse = props => {
 	
     const [index, setIndex] = useState(0);
     const email = localStorage.getItem('email')
-    const deck = localStorage.getItem('deck')
+    const deck = title
 
 
     const [cardList, setCardList] = React.useState([]);

@@ -2,7 +2,6 @@ import "./Home.css";
 import {Link} from 'react-router-dom'
 import Popup from './Popup';
 import React, { useState, useEffect, useRef } from 'react';
-import { useAsync } from "react-async"
 import axios from "axios";
 import Matching from './Matching';
 
@@ -29,7 +28,7 @@ const Home = props => {
 	useEffect(() => {
 		async function getD() {
 		await axios.post(`${process.env.REACT_APP_BASE_URL}/`, { email: localStorage.getItem('email') }).then((response) => {
-			console.log(response.data)
+			//console.log(response.data)
 			if (response.data.Decks != null) {
 				if (componentIsMounted.current) {
 					setList(response.data.Decks);
@@ -54,8 +53,6 @@ const Home = props => {
 		})
 	}
 	function handleView(deckName) {
-		localStorage.setItem("deck", deckName)
-		window.location = '/view';
 	}
 	function handleGenerate(deckName) {
 		const request = {

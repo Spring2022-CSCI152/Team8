@@ -34,7 +34,7 @@ const Matching = props => {
 	var FlashCard;
 	const request = {
 		email: localStorage.getItem('email'),
-		deck: localStorage.getItem('deck')
+		deck: title
 	};
 	axios.post(`${process.env.REACT_APP_BASE_URL}/viewCards`, request).then((response) => {
 		FlashCard = response.data.Cards;

@@ -4,6 +4,40 @@ import FreeResponse from './FreeResponse';
 
 describe("FreeResponse", ()=>{
  
+    test("test flip button gets called", () =>{
+        const mockFn = jest.fn();
+        render(<button onClick={mockFn}>Flip</button>);
+        fireEvent.click(screen.getByText(/flip/i));
+        fireEvent.click(screen.getByText(/flip/i));
+        fireEvent.click(screen.getByText(/flip/i));
+        expect(mockFn).toHaveBeenCalledTimes(3);
+    });
+
+    test("test check button gets called", () =>{
+        const mockFn = jest.fn();
+        render(<button onClick={mockFn}>Check Answer</button>);
+        fireEvent.click(screen.getByText(/check/i));
+        expect(mockFn).toHaveBeenCalledTimes(1);
+    });
+
+    test("test next button gets called", () =>{
+        const mockFn = jest.fn();
+        render(<button onClick={mockFn}>Next</button>);
+        fireEvent.click(screen.getByText(/next/i));
+        fireEvent.click(screen.getByText(/next/i));
+        expect(mockFn).toHaveBeenCalledTimes(2);
+    });
+
+    test("test save score button gets called", () =>{
+        const mockFn = jest.fn();
+        render(<button onClick={mockFn}>Next</button>);
+        fireEvent.click(screen.getByText(/next/i));
+        expect(mockFn).toHaveBeenCalledTimes(1);
+    });
+
+
+    
+
     test("answer text area should accept text", () =>{
         const testAnswer = "test";
         const component = render(<FreeResponse/>);
@@ -43,12 +77,7 @@ describe("FreeResponse", ()=>{
         expect(document.getElementById("nextBtn")).toBeVisible();
     });
 
-    test("test flip button gets called", () =>{
-        const mockFn = jest.fn();
-        render(<button onClick={mockFn}>Flip</button>);
-        fireEvent.click(screen.getByText(/flip/i));
-        expect(mockFn).toHaveBeenCalledTimes(1);
-    });
+
 
     test("test clicking next button should clear answer and hide flip and next button", () =>{
         const testAnswer = "test";

@@ -61,7 +61,6 @@ const Login = props => {
 		else {
 			setSubmitted(true);
 			
-			setIsFlipped(!isFlipped);
 			const registered = {
 				email: email,
 				password: password
@@ -69,6 +68,7 @@ const Login = props => {
 			axios.post(`${process.env.REACT_APP_BASE_URL}/registration`, registered).then((response) => {
 				if (response.data.message == "registration successful") {
 					setError(false);
+					setIsFlipped(!isFlipped);
 				}
 				else {
 					setError(true);
@@ -84,6 +84,9 @@ const Login = props => {
 		//if the fields are left blank it sets the error to true.
 		if (email === '' || password === '') {
 			setError(true);
+			if (email === '' && password === ''){setMessage("Email and Password is blank");}
+			else if (email === ''){setMessage("Email is blank");}
+			else if (password === ''){setMessage("Password is blank");}
 		}
 		else {
 			axios.post(`${process.env.REACT_APP_BASE_URL}/login`, { email: email, password: password }).then((response) => {
@@ -94,6 +97,7 @@ const Login = props => {
 				}
 				else {
 					setError(true);
+					setMessage("User not found.");
 				}
 			}).catch((res) => {
 				if (user.password === "" && user.email === "") { document.getElementById("error").innerHTML = "Must provide email. <br> Must provide password." }

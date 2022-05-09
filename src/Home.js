@@ -7,15 +7,16 @@ import axios from "axios";
 import Matching from './Matching';
 
 const Home = props => {
-	if (localStorage.getItem('email') === null) {
+	{/*if (localStorage.getItem('email') === null) {
 		window.location = '/Login';
-	}
+	}*/}
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen1, setIsOpen1] = useState(false);
 	const [catText, setCatText] = useState("");
 	const [deckTitle, setTitle] = useState("")
 	const [share, setShare] = useState("")
+	const [code, setCode] = useState("")
 
 	const [list, setList] = React.useState([]);
 
@@ -66,7 +67,7 @@ const Home = props => {
 			deck: deckName
 		}
 		axios.post(`${process.env.REACT_APP_BASE_URL}/getShareCode`, request).then((response) => {
-			//do something with response.data.code
+			setCode(response.data.code);
 		})
 	}
 	function handleNew(deckName, code) { // deckName and code are optional (at least 1 required, both ok)
@@ -122,6 +123,7 @@ const Home = props => {
 			  <br></br>
 			  <br></br>
 			  <button className="confirm" onClick={() => handleNew(deckTitle)}><Link className="confirmLink" to="/view" state={{ title: deckTitle }}>Confirm</Link></button>
+			  
 		  </div>
         </>}
         handleClose={togglePopup}
@@ -137,6 +139,7 @@ const Home = props => {
 					<button className="option" onClick={() => handleView(catText)}><Link className="optionLink" to="/view" state={{ title: catText }}>Edit Flashcards</Link></button>
 			        <button className="option" onClick={() => handleDelete(catText)}>Delete Deck</button>
 					<button className="option" onClick={() => handleGenerate(catText)} >Generate Share Link</button>
+					<h3>Share Link: {code}</h3>
 		  </div>
         </>}
         handleClose={togglePopup1}

@@ -1,6 +1,8 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login, {handleEmail,handleLoginBtn} from "./Login";
+import axios from 'axios'
+import { Async } from 'react-async';
 
 describe("Login", ()=>{
  
@@ -79,62 +81,65 @@ describe("Login", ()=>{
         expect(cPasswordNode.value).toMatch("TestPassword");
     });
 
-
     test("test when user clicks signup with blank fields should produce error", () =>{
         const testEmail = '';
         const testPass = '';
+        const testCPass = '';
 
         const component = render(<Login/>);
 
-        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
-        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
-        fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testPass}});
-        fireEvent.click(screen.getByRole("signUpBtn"));
-
-        expect(screen.findByText("There's an error with the forms")).toBeDefined();
-    });
-
-    test("test when user clicks signup with  password and confirm password should produce error", () =>{
-        const testEmail = 'test@mail.com';
-        const testPass = 'test1234';
-        const testCPass = 'test123';
-    
-        const component = render(<Login/>);
-
-        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("S-email"), {target: {value: testEmail}});
         fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
         fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testCPass}});
         fireEvent.click(screen.getByRole("signUpBtn"));
 
-        expect(screen.findByText("There's an error with the forms")).toBeDefined();
+        expect(document.querySelector(".error").innerHTML).toMatch("Email and Password is blank")
     });
 
-    test("test when user clicks signup correct info", () =>{
-        const testEmail = 'test@mail.com';
+    test("test when user clicks signup passwords not matching", () =>{
+        const testEmail = 'test@email.com';
         const testPass = 'test1234';
-        const testCPass = 'test123;';
-    
+        const testCPass = 'test1233';
+
         const component = render(<Login/>);
 
-        fireEvent.change(screen.getByTestId("S-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("S-email"), {target: {value: testEmail}});
         fireEvent.change(screen.getByTestId("S-password"), {target: {value: testPass}});
         fireEvent.change(screen.getByTestId("S-Cpassword"), {target: {value: testCPass}});
         fireEvent.click(screen.getByRole("signUpBtn"));
 
+        expect(document.querySelector(".error").innerHTML).toMatch("Password fields don't match.")
     });
 
-    test("test when user clicks login with blank fields should produce error", () =>{
+    test("test when user clicks login with blank email", () =>{
         const testEmail = '';
+        const testPass = 'test1234';
+
+        const component = render(<Login/>);
+
+        fireEvent.change(screen.getByTestId("L-email"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("L-password"), {target: {value: testPass}});
+        fireEvent.click(screen.getByRole("loginBtn"));
+
+        expect(document.querySelector(".error").innerHTML).toMatch("Email is blank")
+    });
+
+    test("test when user clicks login with blank password", () =>{
+        const testEmail = 'test@email.com';
         const testPass = '';
 
         const component = render(<Login/>);
 
-        fireEvent.change(screen.getByTestId("L-password"), {target: {value: testEmail}});
+        fireEvent.change(screen.getByTestId("L-email"), {target: {value: testEmail}});
         fireEvent.change(screen.getByTestId("L-password"), {target: {value: testPass}});
         fireEvent.click(screen.getByRole("loginBtn"));
 
-        expect(screen.findByText("There's an error with the forms")).toBeDefined();
+        expect(document.querySelector(".error").innerHTML).toMatch("Password is blank")
     });
 
+
+
+
+    
 
 });

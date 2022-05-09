@@ -7,9 +7,9 @@ import axios from "axios";
 import Matching from './Matching';
 
 const Home = props => {
-	{/*if (localStorage.getItem('email') === null) {
+	if (localStorage.getItem('email') === null) {
 		window.location = '/Login';
-	}*/}
+	}
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen1, setIsOpen1] = useState(false);

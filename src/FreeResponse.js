@@ -159,12 +159,12 @@ const FreeResponse = props => {
      //where all the page style and structure is.
      if (cardList.length === 0) {
         return (
-      
-    
+		<>
+		<Navbar />
         <div className="emptyContainer">
             <div className="cardBoxEmpty">Deck empty add cards</div>
         </div>
-    
+		</>
     
        );
         }
@@ -173,6 +173,7 @@ const FreeResponse = props => {
             return (
              
      <>
+			<Navbar />
             <header>
                 <div className="container">
                     <div className="nav">

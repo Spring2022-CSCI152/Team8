@@ -21,6 +21,7 @@ router.post('/viewCards', async (req, res) => {
     const { email, deck } = req.body;
     var result;
     //await setUpDB();
+    //console.log(req.body)
     var d = await getDeck(email, deck);
 
     if (d == null) { // if user/deck cant be found in database

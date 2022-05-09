@@ -72,6 +72,7 @@ const Login = props => {
 				}
 				else {
 					setError(true);
+					setMessage("User already exists.");
                 }
 			})
 		}

@@ -83,12 +83,14 @@ const Home = props => {
 				}
 				axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, request).then((response) => {
 					newlist.push(response.data.deck);
+					localStorage.setItem('deck', response.data.deck.Title)
 				})
 			})
 		}
 		else {
 			axios.post(`${process.env.REACT_APP_BASE_URL}/newDeck`, { email: localStorage.getItem('email'), deck: deckName }).then((response) => {
 				newlist.push(response.data.deck);
+				localStorage.setItem('deck', response.data.deck.Title)
 			})
 		}
 		setList(newlist);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 import Popup from './Popup';
 import arrayShuffle from 'array-shuffle';
-import './Matching.css'
+import './Matching.css';
 import axios from "axios";
 import Navbar from './navbar'
 

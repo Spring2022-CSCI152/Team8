@@ -15,10 +15,10 @@ afterEach(() => {
   unmountComponentAtNode(container);
   container.remove();
   container = null;
-});
+})
 
 
-test('tests button switch colors', () => {
+test('tests if button click switches button colors', () => {
   var style = "cont2"
   var style1 = "cont1"
   const { getByRole } = render(
@@ -47,52 +47,25 @@ test('tests button switch colors', () => {
   expect(colorButton1).toHaveStyle({ backgroundColor: 'backgroundColor: rgb(239, 201, 254);' })
 })
 
-test('tests title', () => {
-  var style = "cont2"
-  var style1 = "cont1"
-  const { getByRole } = render(
-	  <Graph />
-  );
-  
-	localStorage.setItem('title', JSON.stringify("cat1"));
+test('tests if graph is rendered', () => {
+	const { getByText } = render(<Graph />)
 	
-	expect(localStorage.getItem('title') !== null).toBeTruthy();
+	expect(screen.getByText("Matching")).toBeInDocument();
 })
 
-test('tests if email is null', () => {
-  var style = "cont2"
-  var style1 = "cont1"
-  localStorage.setItem('email', JSON.stringify("test@gmail.com"));
-  const { getByRole } = render(<Graph />);
-	expect(localStorage.getItem('email') !== null).toBeTruthy();
-})
+test('tests if button click switches graph components rendered', () => {
+	const { getByText } = render(<Graph />)
+	
+	const colorButton = screen.getByRole('button', { name: 'Matching' })
+	const colorButton1 = screen.getByRole('button', { name: 'Free Response' })
+	
+	expect(screen.getByText("Matching")).toBeInDocument();
 
-test('tests button switch graphs', () => {
-  var style = "cont2"
-  var style1 = "cont1"
-    const match = LineChart;
-  const free = LineChart1;
-  window.ResizeObserver = window.ResizeObserver ||
-    jest.fn().mockImplementation(() => ({
-        disconnect: jest.fn(),
-        observe: jest.fn(),
-        unobserve: jest.fn(),
-    }));
-  
-  const { getByRole } = render(
-	  <Graph />
-  )
+	fireEvent.click(colorButton1)
 
-  // Find an element with a role of button & text of 'Change to blue'
-  const colorButton = screen.getByRole('button', { name: 'Matching' })
-  const colorButton1 = screen.getByRole('button', { name: 'Free Response' })
-  const chart = screen.getByRole('display')
-   
-  fireEvent.click(colorButton1)
-  
+	expect(screen.getByText("Free Response")).toBeInDocument();
 
-    
-  fireEvent.click(colorButton)
-  
+	fireEvent.click(colorButton)
 
+	expect(screen.getByText("Matching")).toBeInDocument();
 })

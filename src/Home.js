@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom'
 import Popup from './Popup';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
-import Matching from './Matching';
 
 const Home = props => {
 	if (localStorage.getItem('email') === null) {
@@ -98,9 +97,7 @@ const Home = props => {
     }
 	return <div>
 	  <Navbar />
-	  <div className="flashCardSets" style = {{
-
-	  }}>
+	  <div className="flashCardSets">
 		  {list.map(({Title}) => (
 			<button key={Title} className="Cardz" onClick={() => togglePopup1(Title)}><b>{Title}</b></button>
 			

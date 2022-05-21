@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "jest": "^27.5.1",
+    "jest-mock-axios": "^4.6.1",
     "react-router-dom": "^6.3.0",
     "use-resize-observer": "^8.0.0"
   }
